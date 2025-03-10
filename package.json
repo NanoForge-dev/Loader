@@ -1,0 +1,65 @@
+{
+  "name": "nanoforge-loader",
+  "version": "1.0.0",
+  "description": "NanoForge Loader - Monorepo",
+  "homepage": "https://github.com/NanoForge-dev/Loader#readme",
+  "license": "MIT",
+  "contributors": [
+    "Bill",
+    "Exelo",
+    "Fexkoser",
+    "Tchips"
+  ],
+  "funding": {
+    "type": "individual",
+    "url": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NanoForge-dev/Loader.git"
+  },
+  "private": true,
+  "scripts": {
+    "setup": "bun i && lerna run setup",
+    "fix": "lerna run fix",
+    "lint": "lerna run lint",
+    "dev": "lerna run dev",
+    "build": "lerna run build",
+    "test": "lerna run test:unit,test:e2e",
+    "test:unit": "lerna run test:unit",
+    "test:e2e": "lerna run test:e2e",
+    "prepare": "husky",
+    "taze": "taze major -w && lerna run taze",
+    "lint-staged": "lint-staged"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.22.0",
+    "@html-eslint/eslint-plugin": "^0.35.2",
+    "@html-eslint/parser": "^0.35.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/bun": "latest",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lerna": "^8.2.1",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.26.0"
+  },
+  "engines": {
+    "node": "23.6.0",
+    "bun": "1.2.4"
+  },
+  "packageManager": "bun@1.2.4",
+  "lint-staged": {
+    "**/*.{js,ts,html,css}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

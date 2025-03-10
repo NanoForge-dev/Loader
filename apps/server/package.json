@@ -1,0 +1,71 @@
+{
+  "name": "nanoforge-loader-server",
+  "version": "1.0.0",
+  "description": "NanoForge Loader - Server",
+  "homepage": "https://github.com/NanoForge-dev/Loader#readme",
+  "license": "MIT",
+  "contributors": [
+    "Bill",
+    "Exelo",
+    "Fexkoser",
+    "Tchips"
+  ],
+  "funding": {
+    "type": "individual",
+    "url": ""
+  },
+  "type": "module",
+  "module": "src/server.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NanoForge-dev/Loader.git",
+    "directory": "apps/server"
+  },
+  "private": true,
+  "scripts": {
+    "setup": "bun i",
+    "build": "bun run clean && bun run build:raw",
+    "build:raw": "bun build src/index.ts --outdir dist --target browser",
+    "clean": "rm -rf dist",
+    "dev": "bun src/server.ts --watch",
+    "start": "bun dist/index.js",
+    "lint": "eslint . && prettier --check . '!.cloud/**'",
+    "fix": "eslint . --fix && prettier --write . '!.cloud/**'",
+    "taze": "taze major -w",
+    "lint-staged": "lint-staged"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/bun": "latest",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "javascript-obfuscator": "^4.1.1",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.26.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": "23.6.0",
+    "bun": "1.2.4"
+  },
+  "packageManager": "bun@1.2.4",
+  "lint-staged": {
+    "**/*.{js,ts,html,css}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
