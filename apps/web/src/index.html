@@ -2,13 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
     <title>Title</title>
   </head>
   <body>
     <script type="module" src="index.ts"></script>
     <div id="nanoforge-loader">
-      <div>Loading...</div>
-      <div id="nanoforge-loader-status"></div>
+      <img id="loader-logo" src="assets/logo.png" alt="logo" />
+      <div id="loading-progress">
+        <div id="nanoforge-loader-status"></div>
+        <div id="loading-bar">
+          <div id="loading-bar-fill"></div>
+        </div>
+      </div>
     </div>
     <canvas
       id="nanoforge-canvas"

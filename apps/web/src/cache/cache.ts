@@ -9,7 +9,7 @@ import {
 } from "../types/manifest.type";
 import { Logger } from "../utils/logger.utils";
 import { setVersion } from "../version";
-import { setLoadingStatus } from "../window";
+import { setLoadingStatus, setLoadingTotalFiles } from "../window";
 
 export class GameCache {
   private readonly logger: Logger = new Logger("Cache");
@@ -36,15 +36,15 @@ export class GameCache {
 
   private async _updateCacheFiles(files: IManifestFile[]): Promise<IExtendedManifestFile[]> {
     const res = [];
-    for (const file of files) {
+    setLoadingTotalFiles(files.length);
+    for (const [i, file] of files.entries()) {
+      setLoadingStatus(file.path, i);
       res.push(await this._updateCacheFile(file));
     }
     return res;
   }
 
   private async _updateCacheFile(fileManifest: IManifestFile): Promise<IExtendedManifestFile> {
-    setLoadingStatus(`Fetching ${fileManifest.path}`);
-
     const res = await fetch(`${env.PUBLIC_BASE_SERVER_URL}/game/${fileManifest.path}`);
 
     const file = await this.fs.getFile(fileManifest.path);
