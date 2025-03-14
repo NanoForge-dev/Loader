@@ -38,7 +38,7 @@ export class GameCache {
     const res = [];
     setLoadingTotalFiles(files.length);
     for (const [i, file] of files.entries()) {
-      setLoadingStatus(file.path, i);
+      setLoadingStatus(`Download: ${file.path.replace(/^\/+/, "")}`, i);
       res.push(await this._updateCacheFile(file));
     }
     return res;

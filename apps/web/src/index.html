@@ -9,10 +9,16 @@
     <script type="module" src="index.ts"></script>
     <div id="nanoforge-loader">
       <img id="loader-logo" src="assets/logo.png" alt="logo" />
-      <div id="loading-progress">
-        <div id="nanoforge-loader-status"></div>
-        <div id="loading-bar">
-          <div id="loading-bar-fill"></div>
+      <div>
+        <div id="loader-error" hidden="">
+          <div id="loader-error-message"></div>
+          <a id="back-home" href="/"> Back home </a>
+        </div>
+        <div id="loading-status">
+          <div id="loading-step"></div>
+          <div id="loading-bar">
+            <div id="loading-bar-fill"></div>
+          </div>
         </div>
       </div>
     </div>
