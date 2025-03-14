@@ -22,7 +22,7 @@ export const changeWindowToLoader = async () => {
 };
 
 export const setLoadingStatus = (filename: string, index?: number | null) => {
-  const loaderFilename = document.getElementById(IDS.loaderStatus);
+  const loaderFilename = document.getElementById(IDS.loadingStep);
   const loadingBarFill = document.getElementById(IDS.loadingBar);
 
   if (loaderFilename) loaderFilename.innerText = filename;
@@ -35,4 +35,14 @@ export const setLoadingStatus = (filename: string, index?: number | null) => {
 
 export const setLoadingTotalFiles = (total: number) => {
   totalFiles = total;
+};
+
+export const setError = (error: string) => {
+  const loaderErrorMessage = document.getElementById(IDS.loaderErrorMessage);
+
+  if (!loaderErrorMessage) return;
+  loaderErrorMessage.innerText = error;
+
+  setHiddenStatusOnId(IDS.loadingStatus, true);
+  setHiddenStatusOnId(IDS.loaderError, false);
 };

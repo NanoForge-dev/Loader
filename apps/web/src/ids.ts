@@ -1,6 +1,11 @@
 export const IDS = {
   canvas: "nanoforge-canvas",
   loader: "nanoforge-loader",
-  loaderStatus: "nanoforge-loader-status",
+
+  loadingStatus: "loading-status",
+  loadingStep: "loading-step",
   loadingBar: "loading-bar-fill",
+
+  loaderError: "loader-error",
+  loaderErrorMessage: "loader-error-message",
 };
