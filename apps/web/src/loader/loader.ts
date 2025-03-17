@@ -10,7 +10,8 @@ export const loadGameFiles = async (
 ): Promise<[IGameOptions["files"], any]> => {
   const files = {
     assets: new Map<string, string>(),
-    scripts: new Map<string, string>(),
+    wasm: new Map<string, string>(),
+    wgsl: new Map<string, string>(),
   };
   let mainModule = undefined;
   logger.info("Starting load game files from cache");
@@ -21,7 +22,9 @@ export const loadGameFiles = async (
       continue;
     }
     if (file.path.endsWith(".wasm")) {
-      files.scripts.set(file.path, file.localPath);
+      files.wasm.set(file.path, file.localPath);
+    } else if (file.path.endsWith(".wgsl")) {
+      files.wgsl.set(file.path, file.localPath);
     } else {
       files.assets.set(file.path, file.localPath);
     }
