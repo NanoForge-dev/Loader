@@ -12,7 +12,7 @@ export const loadGameFiles = async (
   let mainModule = undefined;
   logger.info("Starting load game files from cache");
   for (const file of manifest.files) {
-    if (file.path === "index.js") {
+    if (file.path === "/index.js") {
       const resModule = await loadScript(file);
       if (resModule) mainModule = resModule;
       continue;
