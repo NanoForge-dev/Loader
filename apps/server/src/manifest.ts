@@ -1,14 +1,16 @@
-import * as fs from "fs";
-
 import { updateFiles } from "./files";
 import { MANIFEST } from "./server";
 
-export const updateManifest = () => {
-  MANIFEST.version = getVersion();
+export const updateManifest = async (dir: string) => {
+  MANIFEST.version = await getVersion();
   MANIFEST.files = [];
-  updateFiles();
+  await updateFiles(dir);
 };
 
-const getVersion = () => {
-  return fs.readFileSync("public/version", "utf8");
+const getVersion = async () => {
+  try {
+    return await Bun.file("public/version").text();
+  } catch {
+    return "0.0.0";
+  }
 };

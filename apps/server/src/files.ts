@@ -1,19 +1,24 @@
-import * as fs from "node:fs";
+import { readdir } from "node:fs/promises";
 
 import { MANIFEST } from "./server";
 
-export const updateFiles = () => {
-  addPath("public/game", "");
+export const updateFiles = (dir: string) => {
+  return addPath(dir, "");
 };
 
-const addPath = (path: string, exportedPath: string) => {
-  if (fs.statSync(path).isDirectory()) {
-    fs.readdirSync(path).forEach((file) => {
-      addPath(`${path}/${file}`, `${exportedPath}/${file}`);
+const addPath = async (path: string, exportedPath: string) => {
+  try {
+    if ((await Bun.file(path).stat()).isDirectory()) {
+      for (const file of await readdir(path)) {
+        await addPath(`${path}/${file}`, `${exportedPath}/${file}`);
+      }
+      return;
+    }
+    MANIFEST.files.push({
+      path: exportedPath,
     });
-    return;
+  } catch (e) {
+    console.error(e);
+    /* empty */
   }
-  MANIFEST.files.push({
-    path: exportedPath,
-  });
 };

@@ -25,6 +25,7 @@
     "lint": "lerna run lint",
     "dev": "lerna run dev",
     "build": "lerna run build",
+    "publish": "lerna run publish",
     "test": "lerna run test:unit,test:e2e",
     "test:unit": "lerna run test:unit",
     "test:e2e": "lerna run test:e2e",
