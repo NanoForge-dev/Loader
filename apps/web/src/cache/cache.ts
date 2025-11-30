@@ -1,4 +1,4 @@
-import { env } from "../env";
+import { GAME_EXPOSURE_URL } from "../env.json";
 import { FileSystemManager } from "../file-system";
 import { isManifestUpToDate } from "../manifest";
 import {
@@ -45,7 +45,7 @@ export class GameCache {
   }
 
   private async _updateCacheFile(fileManifest: IManifestFile): Promise<IExtendedManifestFile> {
-    const res = await fetch(`${env.PUBLIC_BASE_SERVER_URL}/game/${fileManifest.path}`);
+    const res = await fetch(`${GAME_EXPOSURE_URL}/game/${fileManifest.path}`);
 
     const file = await this.fs.getFile(fileManifest.path);
 

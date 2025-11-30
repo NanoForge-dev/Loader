@@ -1,7 +1,7 @@
 {
-  "name": "nanoforge-loader-web",
-  "version": "1.0.0",
-  "description": "NanoForge Loader - Web",
+  "name": "@nanoforge-dev/loader-client",
+  "version": "0.0.2",
+  "description": "NanoForge Loader - Client",
   "homepage": "https://github.com/NanoForge-dev/Loader#readme",
   "license": "MIT",
   "contributors": [
@@ -15,22 +15,28 @@
     "url": ""
   },
   "type": "module",
-  "module": "src/index.ts",
+  "main": "dist/index.html",
   "browser": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NanoForge-dev/Loader.git",
     "directory": "apps/web"
   },
-  "private": true,
+  "files": [
+    "src",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "setup": "bun i",
-    "build": "bun run clean && bun run build:raw && bun run build:obfuscate",
-    "build:raw": "bun build src/index.html --outdir dist --target browser --env PUBLIC_*",
-    "build:obfuscate": "./scripts/obfuscate.sh dist",
+    "build": "bun run clean && bun run build:raw",
+    "build:silent": "bun --silent run clean && bun --silent run build:raw",
+    "build:raw": "bun build src/index.html --outdir dist --target browser",
     "clean": "rm -rf dist",
     "dev": "bun src/index.html",
     "start": "bun dist/index.html",
+    "publish": "npm publish --access public",
     "lint": "eslint . && prettier --check . '!.cloud/**'",
     "fix": "eslint . --fix && prettier --write . '!.cloud/**'",
     "taze": "taze major -w",

@@ -1,11 +1,11 @@
-import { env } from "./env";
+import { GAME_EXPOSURE_URL } from "./env.json";
 import { type IManifest } from "./types/manifest.type";
 import { getVersion } from "./version";
 import { setLoadingStatus } from "./window";
 
 export const getManifest = async (): Promise<IManifest> => {
   setLoadingStatus("Fetching manifest");
-  const res = await fetch(`${env.PUBLIC_BASE_SERVER_URL}/manifest`);
+  const res = await fetch(`${GAME_EXPOSURE_URL}/manifest`);
   if (!res.ok) {
     throw new Error();
   }
