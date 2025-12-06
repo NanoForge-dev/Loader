@@ -1,38 +1,28 @@
-import { join } from "node:path";
+import { createRequire } from "node:module";
 
-import { updateManifest } from "./manifest";
+import { getGameDir } from "./env";
+import { getFiles } from "./files";
 
-export const MANIFEST: { version: string; files: { path: string }[] } = {
-  version: "",
-  files: [],
+const bootstrap = async () => {
+  const gameDir = getGameDir();
+
+  const paths = getFiles(gameDir);
+  let mainPath: string | undefined = undefined;
+
+  paths.filter(([path, fullPath]) => {
+    if (path !== "/main.js") return true;
+    mainPath = fullPath;
+    return false;
+  });
+
+  if (!mainPath) throw new Error("No main.js found");
+
+  const { main } = (await createRequire(import.meta.url)(mainPath)) as {
+    main: (options: { files: Map<string, string> }) => Promise<void>;
+  };
+
+  console.log("Starting server");
+  await main({ files: new Map(paths) });
 };
 
-const port = process.env.PORT || 8080;
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-const gameDir = process.env.GAME_DIR || "public/game";
-
-const headers = {
-  "Access-Control-Allow-Origin": clientUrl,
-  "Access-Control-Allow-Methods": "GET",
-};
-
-const server = Bun.serve({
-  port: port,
-  routes: {
-    "/manifest": async () => {
-      await updateManifest(gameDir);
-      return Response.json(MANIFEST, {
-        headers,
-      });
-    },
-    "/game/*": (req) => {
-      const path = new URL(req.url).pathname.replace("/game", "");
-      const file = Bun.file(join(gameDir, path));
-      return new Response(file, {
-        headers,
-      });
-    },
-  },
-});
-
-console.log(`Server started on port ${server.port}`);
+bootstrap().then();

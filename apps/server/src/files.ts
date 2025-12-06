@@ -1,24 +1,19 @@
-import { readdir } from "node:fs/promises";
+import * as fs from "node:fs";
+import { join } from "node:path";
 
-import { MANIFEST } from "./server";
+const PATHS: [string, string][] = [];
 
-export const updateFiles = (dir: string) => {
-  return addPath(dir, "");
+export const getFiles = (basePath: string) => {
+  addPath(basePath, "");
+  return PATHS;
 };
 
-const addPath = async (path: string, exportedPath: string) => {
-  try {
-    if ((await Bun.file(path).stat()).isDirectory()) {
-      for (const file of await readdir(path)) {
-        await addPath(`${path}/${file}`, `${exportedPath}/${file}`);
-      }
-      return;
-    }
-    MANIFEST.files.push({
-      path: exportedPath,
+const addPath = (path: string, exportedPath: string) => {
+  if (fs.statSync(path).isDirectory()) {
+    fs.readdirSync(path).forEach((file) => {
+      addPath(join(path, file), join(exportedPath, file));
     });
-  } catch (e) {
-    console.error(e);
-    /* empty */
+    return;
   }
+  PATHS.push([`/${exportedPath}`, path]);
 };
