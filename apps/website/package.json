@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@nanoforge-dev/loader-server",
-  "version": "0.0.2",
-  "description": "NanoForge Loader - Server",
+  "name": "@nanoforge-dev/loader-website",
+  "version": "0.0.0",
+  "description": "NanoForge Loader - Website",
   "homepage": "https://github.com/NanoForge-dev/Loader#readme",
   "bugs": "https://github.com/NanoForge-dev/Loader/issues",
   "license": "MIT",
@@ -15,20 +15,10 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
+  "main": "./dist/index.html",
+  "module": "./dist/index.html",
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    },
+    "./*": "./dist/*",
     "./package.json": "./package.json"
   },
   "type": "module",
@@ -39,20 +29,21 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NanoForge-dev/Loader.git",
-    "directory": "apps/server"
+    "directory": "apps/website"
   },
   "funding": "",
   "scripts": {
-    "build": "bun build src/server.ts --outdir dist --target node",
-    "start": "bun run dist/server.js",
+    "build": "bun build src/index.html --outdir dist --target browser --asset-naming [name].[ext]",
     "lint": "prettier --check . && eslint --format=pretty src",
     "format": "prettier --write . && eslint --fix --format=pretty src",
     "prepack": "pnpm run build && pnpm run lint",
-    "changelog": "git cliff --prepend ./CHANGELOG.md -u -c ./cliff.toml -r ../../ --include-path 'apps/server/*'",
+    "changelog": "git cliff --prepend ./CHANGELOG.md -u -c ./cliff.toml -r ../../ --include-path 'apps/website/*'",
     "release": "cliff-jumper"
   },
   "devDependencies": {
     "@favware/cliff-jumper": "^6.0.0",
+    "@html-eslint/eslint-plugin": "^0.35.2",
+    "@html-eslint/parser": "^0.35.2",
     "@nanoforge-dev/utils-eslint-config": "^1.0.0",
     "@nanoforge-dev/utils-prettier-config": "^1.0.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",

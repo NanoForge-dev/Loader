@@ -1,66 +1,58 @@
 {
-  "name": "nanoforge-loader",
-  "version": "1.0.0",
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@nanoforge-dev/loader",
+  "version": "0.0.0",
   "description": "NanoForge Loader - Monorepo",
   "homepage": "https://github.com/NanoForge-dev/Loader#readme",
+  "bugs": "https://github.com/NanoForge-dev/Engine/issues",
   "license": "MIT",
   "contributors": [
-    "Bill",
-    "Exelo",
-    "Fexkoser",
-    "Tchips"
+    "Bill <timothe.jacquot@epitech.eu>",
+    "Exelo <exelo.corp@gmail.com>",
+    "Fexkoser <martin.fillon@epitech.eu>",
+    "Tchips <leo.outmizguine@epitech.eu>"
   ],
-  "funding": {
-    "type": "individual",
-    "url": ""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NanoForge-dev/Loader.git"
   },
-  "private": true,
+  "funding": "",
   "scripts": {
-    "setup": "bun i && lerna run setup",
-    "fix": "lerna run fix",
-    "lint": "lerna run lint",
-    "dev": "lerna run dev",
-    "build": "lerna run build",
-    "publish": "lerna run publish",
-    "test": "lerna run test:unit,test:e2e",
-    "test:unit": "lerna run test:unit",
-    "test:e2e": "lerna run test:e2e",
+    "build": "turbo run build --concurrency=5",
+    "format": "prettier --write . && turbo run format --concurrency=5",
+    "lint": "prettier --check . && turbo run lint --concurrency=5",
+    "test:unit": "turbo run test:unit --concurrency=5",
+    "test:e2e": "turbo run test:e2e --concurrency=5",
     "prepare": "husky",
-    "taze": "taze major -w && lerna run taze",
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
-    "@eslint/js": "^9.22.0",
-    "@html-eslint/eslint-plugin": "^0.35.2",
-    "@html-eslint/parser": "^0.35.2",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "@types/bun": "latest",
-    "eslint": "^9.22.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-format": "^1.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "globals": "^16.0.0",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@nanoforge-dev/utils-eslint-config": "^1.0.0",
+    "@nanoforge-dev/utils-prettier-config": "^1.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@types/bun": "^1.3.3",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "eslint-formatter-pretty": "^7.0.0",
     "husky": "^9.1.7",
-    "lerna": "^8.2.1",
-    "lint-staged": "^15.4.3",
-    "prettier": "^3.5.3",
-    "typescript-eslint": "^8.26.0"
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.2",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3"
   },
+  "packageManager": "pnpm@10.22.0",
   "engines": {
-    "node": "23.6.0",
-    "bun": "1.2.4"
+    "node": "24.11.0"
   },
-  "packageManager": "bun@1.2.4",
+  "private": true,
   "lint-staged": {
-    "**/*.{js,ts,html,css}": [
-      "eslint --fix",
+    "**/*.{ts,html,css}": [
       "prettier --write"
+    ],
+    "src/**/*.{ts,html,css}": [
+      "eslint --fix"
     ]
   }
 }

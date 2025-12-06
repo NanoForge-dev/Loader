@@ -1,0 +1,27 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "remoteCache": {
+    "enabled": true
+  },
+  "globalDependencies": ["tsconfig.json"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "test/**", "package.json", "tsconfig.json", "tsup.config.ts"],
+      "outputs": ["dist/**"],
+      "outputLogs": "errors-only"
+    },
+    "format": {
+      "dependsOn": ["^format"],
+      "inputs": ["**"],
+      "outputs": [],
+      "outputLogs": "errors-only"
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "inputs": ["**"],
+      "outputs": [],
+      "outputLogs": "errors-only"
+    }
+  }
+}
