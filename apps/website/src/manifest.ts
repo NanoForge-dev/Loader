@@ -1,6 +1,6 @@
-import {type IManifest} from "./types/manifest.type";
-import {getVersion} from "./version";
-import {setLoadingStatus} from "./window";
+import { type IManifest } from "./types/manifest.type";
+import { getVersion } from "./version";
+import { setLoadingStatus } from "./window";
 
 export const getManifest = async (): Promise<IManifest> => {
   setLoadingStatus("Fetching manifest");

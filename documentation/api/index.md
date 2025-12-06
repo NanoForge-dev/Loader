@@ -3,7 +3,7 @@ outline: deep
 
 next:
   text: Manifest
-  link: '/api/manifest'
+  link: "/api/manifest"
 ---
 
 # API Introduction
