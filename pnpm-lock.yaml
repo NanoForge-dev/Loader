@@ -75,8 +75,8 @@ importers:
   apps/client:
     dependencies:
       '@nanoforge-dev/loader-website':
-        specifier: workspace:^
-        version: link:../website
+        specifier: ^1.0.0
+        version: 1.0.0
       bun:
         specifier: ^1.3.3
         version: 1.3.3
@@ -457,6 +457,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@nanoforge-dev/loader-website@1.0.0':
+    resolution: {integrity: sha512-0667VNh91NM7/3EhXitiuZ1rLljbjOkHU3fRLSCa9R9IIn9tpaoELh5Uj66jj1GQHsbFMSgGgysWf0SaeEdMeQ==}
+    engines: {node: 24.11.0}
 
   '@nanoforge-dev/utils-eslint-config@1.0.0':
     resolution: {integrity: sha512-SE4PTI0vup2KacaeeZ2OUYF4+7F92N+6RbugXTRmyk37N/Jnd8uYh4gaj5SxrDWAfUtskKBVTAFwPiQU07jmzw==}
@@ -1974,6 +1978,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@nanoforge-dev/loader-website@1.0.0': {}
 
   '@nanoforge-dev/utils-eslint-config@1.0.0': {}
 
