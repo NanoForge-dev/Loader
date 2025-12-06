@@ -54,7 +54,7 @@ importers:
   apps/client:
     dependencies:
       '@nanoforge-dev/loader-website':
-        specifier: file:../website
+        specifier: workspace:^
         version: link:../website
       bun:
         specifier: ^1.3.3

@@ -1,2 +1,2 @@
-bun lint-staged
-bun lerna run lint
+pnpm --no-install lint-staged
+pnpm format
