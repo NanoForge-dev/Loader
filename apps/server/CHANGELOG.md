@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [@nanoforge-dev/loader-server@1.0.1](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-server@1.0.0...@nanoforge-dev/loader-server@1.0.1) - (2026-01-05)
+
+## Bug Fixes
+
+- **server:** Update start script to use node instead of bun (#23) ([6bc149d](https://github.com/NanoForge-dev/Loader/commit/6bc149db69fe8ad0442771cd58abbbdb88516024)) by @Exeloo
+
 # [@nanoforge-dev/loader-server@1.0.0](https://github.com/NanoForge-dev/Loader/tree/@nanoforge-dev/loader-server@1.0.0) - (2025-12-06)
 
 ## Features
