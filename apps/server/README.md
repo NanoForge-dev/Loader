@@ -7,7 +7,8 @@
 	<p>
         <a href="https://www.npmjs.com/package/@nanoforge-dev/loader-server"><img src="https://img.shields.io/npm/v/@nanoforge-dev/loader-server.svg?maxAge=3600" alt="npm version" /></a>
 		<a href="https://www.npmjs.com/package/@nanoforge-dev/loader-server"><img src="https://img.shields.io/npm/dt/@nanoforge-dev/loader-server.svg?maxAge=3600" alt="npm downloads" /></a>
-		<a href="https://github.com/NanoForge-dev/Loader/actions"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml/badge.svg" alt="Tests status" /></a>
+		<a href="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml/badge.svg" alt="Tests status" /></a>
+        <a href="https://github.com/NanoForge-dev/Loader/actions/workflows/push-docs.yml"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/push-docs.yml/badge.svg" alt="Documentation status" /></a>
         <a href="https://github.com/NanoForge-dev/Loader/commits/main/apps/server"><img src="https://img.shields.io/github/last-commit/NanoForge-dev/Loader.svg?logo=github&logoColor=ffffff&path=apps%2Fserver" alt="Last commit" /></a>
     	<a href="https://github.com/NanoForge-dev/Loader/graphs/contributors"><img src="https://img.shields.io/github/contributors/NanoForge-dev/Loader.svg?maxAge=3600&logo=github&logoColor=fff&color=00c7be" alt="Contributors" /></a>
 	</p>
