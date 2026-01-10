@@ -15,9 +15,3 @@ app:website:
       - any-glob-to-any-file:
           - apps/website/*
           - apps/website/**/*
-
-documentation:
-  - changed-files:
-      - any-glob-to-any-file:
-          - docs/*
-          - docs/**/*

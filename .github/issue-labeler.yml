@@ -9,6 +9,3 @@ app:server:
 app:website:
   - "### Which app is this (bug
     report|feature request) for\\?\\n\\nwebsite\\n"
-
-documentation:
-  - "### What is the type of issue?\\n"
