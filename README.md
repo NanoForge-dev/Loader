@@ -1,6 +1,6 @@
 <div align="center">
-	<br />
-	<p>
+    <br />
+    <p>
 		<a href="https://github.com/NanoForge-dev"><img src="https://github.com/NanoForge-dev/Loader/blob/main/.github/logo.png" width="546" alt="NanoForge" /></a>
 	</p>
 	<br />
