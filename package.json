@@ -30,6 +30,7 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.39.1",
+    "@nanoforge-dev/actions": "^1.0.2",
     "@nanoforge-dev/utils-eslint-config": "^1.0.0",
     "@nanoforge-dev/utils-prettier-config": "^1.0.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",

@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "The published name of a single package to release"
+        type: choice
+        required: false
+        options:
+          - "all"
+          - "@nanoforge-dev/loader-client"
+          - "@nanoforge-dev/loader-server"
+          - "@nanoforge-dev/loader-website"
+      exclude:
+        description: "Comma separated list of packages to exclude from release (if not depended upon)"
+        required: false
+        type: string
+      dry_run:
+        description: Perform a dry run?
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  npm-publish:
+    name: npm publish
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'NanoForge-dev'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install Node.js v24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: Build dependencies
+        run: pnpm run build
+
+      - name: Release packages
+        uses: ./node_modules/@nanoforge-dev/actions/dist/release-packages
+        with:
+          package: ${{ inputs.package }}
+          exclude: ${{ inputs.exclude }}
+          dry: ${{ inputs.dry_run }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
