@@ -1,0 +1,17 @@
+app:client:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/client/*
+          - apps/client/**/*
+
+app:server:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/server/*
+          - apps/server/**/*
+
+app:website:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/website/*
+          - apps/website/**/*

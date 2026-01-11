@@ -1,20 +1,22 @@
 <div align="center">
     <br />
     <p>
-		<a href="https://github.com/NanoForge-dev"><img src="https://github.com/NanoForge-dev/Loader/blob/main/.github/logo.png" width="546" alt="NanoForge" /></a>
-	</p>
-	<br />
-	<p>
-		<a href="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml/badge.svg" alt="Tests status" /></a>
+        <a href="https://github.com/NanoForge-dev"><img src="https://github.com/NanoForge-dev/Loader/blob/main/.github/logo.png" width="546" alt="NanoForge" /></a>
+    </p>
+    <br />
+    <p>
+        <a href="https://www.npmjs.com/package/@nanoforge-dev/loader-website"><img src="https://img.shields.io/npm/v/@nanoforge-dev/loader-website.svg?maxAge=3600" alt="npm version" /></a>
+        <a href="https://www.npmjs.com/package/@nanoforge-dev/loader-website"><img src="https://img.shields.io/npm/dt/@nanoforge-dev/loader-website.svg?maxAge=3600" alt="npm downloads" /></a>
+        <a href="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/tests.yml/badge.svg" alt="Tests status" /></a>
         <a href="https://github.com/NanoForge-dev/Loader/actions/workflows/push-docs.yml"><img src="https://github.com/NanoForge-dev/Loader/actions/workflows/push-docs.yml/badge.svg" alt="Documentation status" /></a>
-        <a href="https://github.com/NanoForge-dev/Loader/commits/main"><img src="https://img.shields.io/github/last-commit/NanoForge-dev/Loader.svg?logo=github&logoColor=ffffff" alt="Last commit" /></a>
-		<a href="https://github.com/NanoForge-dev/Loader/graphs/contributors"><img src="https://img.shields.io/github/contributors/NanoForge-dev/Loader.svg?maxAge=3600&logo=github&logoColor=fff&color=00c7be" alt="Contributors" /></a>
-	</p>
+        <a href="https://github.com/NanoForge-dev/Loader/commits/main/apps/website"><img src="https://img.shields.io/github/last-commit/NanoForge-dev/Loader.svg?logo=github&logoColor=ffffff&path=apps%2Fwebsite" alt="Last commit" /></a>
+        <a href="https://github.com/NanoForge-dev/Loader/graphs/contributors"><img src="https://img.shields.io/github/contributors/NanoForge-dev/Loader.svg?maxAge=3600&logo=github&logoColor=fff&color=00c7be" alt="Contributors" /></a>
+    </p>
 </div>
 
 ## About
 
-This repository contains the Loader of NanoForge. Check [releases][github-releases] to see versions of the Loader. Nanoforge is a powerful game engine for web browser.
+This repository contains the Loader Website of NanoForge. Check [releases][github-releases] to see versions of the Loader. Nanoforge is a powerful game engine for web browser.
 
 ## Usage
 
