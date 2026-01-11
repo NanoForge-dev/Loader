@@ -21,3 +21,7 @@ export const getWatch = () => {
 export const getWatchPort = () => {
   return process.env.WATCH_PORT;
 };
+
+export const getWatchServerGameDir = () => {
+  return process.env.WATCH_SERVER_GAME_DIR;
+};

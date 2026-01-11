@@ -2,7 +2,7 @@ import { watch } from "fs";
 
 import { MANIFEST } from "./server";
 
-export const startWatch = (gameDir: string, port?: string) => {
+export const startWatch = (gameDir: string, port?: string, serverGameDir?: string) => {
   const server = Bun.serve({
     port: port ?? 0,
     fetch(req, server) {
@@ -29,10 +29,26 @@ export const startWatch = (gameDir: string, port?: string) => {
     url: server.url.toString(),
   };
 
-  watch(gameDir, { recursive: true }, () => {
+  let lastCall = Date.now();
+
+  const onClientWatch = () => {
+    if (lastCall + 100 > Date.now()) return;
+    lastCall = Date.now();
     server.publish("watch", "update");
-    console.log(`Game updated`);
-  });
+    console.log(`[Watcher] Game client triggered an updated`);
+  };
+
+  const onServerWatch = () => {
+    if (lastCall + 100 > Date.now()) return;
+    lastCall = Date.now();
+    setTimeout(() => {
+      server.publish("watch", "update");
+      console.log(`[Watcher] Game server triggered an updated`);
+    }, 100);
+  };
+
+  watch(gameDir, { recursive: true }, onClientWatch);
+  if (serverGameDir) watch(serverGameDir, { recursive: true }, onServerWatch);
 
   console.log(`Watcher started on url ${server.url.toString()}`);
 };

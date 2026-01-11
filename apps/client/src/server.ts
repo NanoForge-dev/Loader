@@ -1,6 +1,13 @@
 import { join } from "node:path";
 
-import { getGameDir, getPort, getPublicEnv, getWatch, getWatchPort } from "./env";
+import {
+  getGameDir,
+  getPort,
+  getPublicEnv,
+  getWatch,
+  getWatchPort,
+  getWatchServerGameDir,
+} from "./env";
 import { updateManifest } from "./manifest";
 import { startWatch } from "./watch";
 
@@ -82,4 +89,4 @@ const server = Bun.serve({
 
 console.log(`Client started on url ${server.url.toString()}`);
 
-if (watch) startWatch(gameDir, getWatchPort());
+if (watch) startWatch(gameDir, getWatchPort(), getWatchServerGameDir());

@@ -43,7 +43,9 @@
   },
   "funding": "",
   "scripts": {
-    "build": "bun build src/server.ts --outdir dist --target node",
+    "build": "pnpm run build:server && pnpm run build:worker",
+    "build:server": "bun build src/server.ts --outdir dist --target node",
+    "build:worker": "bun build src/worker.ts --outdir dist --target node",
     "start": "node dist/server.js",
     "lint": "prettier --check . && eslint --format=pretty src",
     "format": "prettier --write . && eslint --fix --format=pretty src",
