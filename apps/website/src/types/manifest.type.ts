@@ -5,6 +5,7 @@ export interface IManifestFile {
 export interface IManifest {
   version: string;
   files: IManifestFile[];
+  watch: { enable: false } | { enable: true; url: string };
 }
 
 export interface IExtendedManifestFile extends IManifestFile {
