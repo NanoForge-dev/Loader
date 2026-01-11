@@ -1,11 +1,30 @@
 import { join } from "node:path";
 
-import { getGameDir, getPort, getPublicEnv } from "./env";
+import {
+  getGameDir,
+  getPort,
+  getPublicEnv,
+  getWatch,
+  getWatchPort,
+  getWatchServerGameDir,
+} from "./env";
 import { updateManifest } from "./manifest";
+import { startWatch } from "./watch";
 
-export const MANIFEST: { version: string; files: { path: string }[] } = {
+type IManifest = {
+  version: string;
+  files: { path: string }[];
+  watch: { enable: false } | { enable: true; url: string };
+};
+
+const watch = getWatch() === "true";
+
+export const MANIFEST: IManifest = {
   version: "",
   files: [],
+  watch: {
+    enable: false,
+  },
 };
 
 const resolveWebDir = (str: string) => {
@@ -68,4 +87,6 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Client started on port ${server.port}`);
+console.log(`Client started on url ${server.url.toString()}`);
+
+if (watch) startWatch(gameDir, getWatchPort(), getWatchServerGameDir());

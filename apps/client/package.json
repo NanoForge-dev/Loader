@@ -52,7 +52,7 @@
     "release": "cliff-jumper"
   },
   "dependencies": {
-    "@nanoforge-dev/loader-website": "^1.0.0",
+    "@nanoforge-dev/loader-website": "^1.1.0",
     "bun": "^1.3.3"
   },
   "devDependencies": {

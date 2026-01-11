@@ -1,7 +1,11 @@
-import { createRequire } from "node:module";
+import { type ChildProcess, fork } from "node:child_process";
+import { join } from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { getGameDir } from "./env";
+import { getGameDir, getWatch } from "./env";
 import { getFiles } from "./files";
+import { startWatch } from "./watch";
 
 const bootstrap = async () => {
   const gameDir = getGameDir();
@@ -17,12 +21,24 @@ const bootstrap = async () => {
 
   if (!mainPath) throw new Error("No main.js found");
 
-  const { main } = (await createRequire(import.meta.url)(mainPath)) as {
-    main: (options: { files: Map<string, string> }) => Promise<void>;
+  let child: ChildProcess | undefined;
+
+  const runWorker = async () => {
+    if (child) {
+      child.kill();
+      child = undefined;
+    }
+
+    const __filename = fileURLToPath(import.meta.url);
+    child = fork(join(dirname(__filename), "worker.js"), [
+      mainPath as string,
+      JSON.stringify(paths),
+    ]);
   };
 
-  console.log("Starting server");
-  await main({ files: new Map(paths) });
+  if (getWatch()) startWatch(gameDir, runWorker);
+
+  await runWorker();
 };
 
 bootstrap().then();
