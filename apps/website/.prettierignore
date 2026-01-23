@@ -1,11 +1,14 @@
-# Ignore files for PNPM, NPM and YARN
+.idea/
+.vscode/
+
+dist/
+node_modules/
+
 pnpm-lock.yaml
-package-lock.json
-yarn.lock
-bun.lock
+pnpm-workspace.yaml
+
+CHANGELOG.md
+
+coverage/
 
 .turbo/
-node_modules/
-dist/
-coverage/
-CHANGELOG.md
