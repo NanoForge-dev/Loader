@@ -1,3 +1,3 @@
-import config from "@nanoforge-dev/utils-eslint-config";
+import eslintConfig from "@nanoforge-dev/utils-eslint-config";
 
-export default config;
+export default eslintConfig;
