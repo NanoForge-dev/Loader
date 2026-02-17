@@ -14,6 +14,16 @@ export const getGameDir = () => {
   throw new Error("GAME_DIR env variable not found");
 };
 
+export const getCert = () => {
+  if (process.env.CERT) return process.env.CERT;
+  else return undefined;
+};
+
+export const getKey = () => {
+  if (process.env.KEY) return process.env.KEY;
+  else return undefined;
+};
+
 export const getWatch = () => {
   return process.env.WATCH;
 };
