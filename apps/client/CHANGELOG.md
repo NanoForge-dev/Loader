@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [@nanoforge-dev/loader-client@1.2.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-client@1.1.0...@nanoforge-dev/loader-client@1.2.0) - (2026-02-18)
+
+## Features
+
+- **client:** Add tls options for https (#41) ([f3b51a1](https://github.com/NanoForge-dev/Loader/commit/f3b51a185d3107631af016d8a93c1f9bd4dd8091)) by @MartinFillon
+
 # [@nanoforge-dev/loader-client@1.1.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-client@1.0.1...@nanoforge-dev/loader-client@1.1.0) - (2026-01-11)
 
 ## Documentation
