@@ -1,7 +1,9 @@
 import { join } from "node:path";
 
 import {
+  getCert,
   getGameDir,
+  getKey,
   getPort,
   getPublicEnv,
   getWatch,
@@ -40,8 +42,14 @@ const headers = {
   "Access-Control-Allow-Methods": "GET",
 };
 
+const cert = getCert();
+const key = getKey();
+
+const tls = cert && key ? { cert: Bun.file(cert), key: Bun.file(key) } : undefined;
+
 const server = Bun.serve({
   port: port,
+  tls: tls,
   routes: {
     "/": () => {
       const file = Bun.file(resolveWebDir("index.html"));
