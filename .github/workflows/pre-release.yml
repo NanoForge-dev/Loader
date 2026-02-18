@@ -3,6 +3,14 @@ name: Pre-Release
 on:
   workflow_dispatch:
     inputs:
+      package:
+        description: "The published name of a single package to release"
+        type: choice
+        required: true
+        options:
+          - "@nanoforge-dev/loader-client"
+          - "@nanoforge-dev/loader-server"
+          - "@nanoforge-dev/loader-website"
       version:
         description: "New version of the package (leave empty for auto generated version)"
         type: string
@@ -34,7 +42,7 @@ jobs:
       - name: Release packages
         uses: ./node_modules/@nanoforge-dev/actions/dist/create-release-pr
         with:
-          package: "@nanoforge-dev/schematics"
+          package: ${{ inputs.package }}
           version: ${{ inputs.version }}
           dry: ${{ inputs.dry_run }}
         env:
