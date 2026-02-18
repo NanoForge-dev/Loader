@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+# [@nanoforge-dev/loader-server@1.2.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-server@1.1.0...@nanoforge-dev/loader-server@1.2.0) - (2026-02-18)
+
 # [@nanoforge-dev/loader-server@1.1.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-server@1.0.1...@nanoforge-dev/loader-server@1.1.0) - (2026-01-11)
 
 ## Documentation
