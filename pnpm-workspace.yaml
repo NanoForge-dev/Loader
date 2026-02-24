@@ -4,7 +4,7 @@ packages:
 catalogs:
   build:
     tsup: ^8.5.1
-    turbo: ^2.8.9
+    turbo: ^2.8.10
     typescript: ^5.9.3
   ci:
     '@commitlint/cli': ^20.3.1
