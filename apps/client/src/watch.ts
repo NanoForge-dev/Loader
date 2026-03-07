@@ -6,10 +6,7 @@ export const startWatch = (gameDir: string, port?: string, serverGameDir?: strin
   const server = Bun.serve({
     port: port ?? 0,
     fetch(req, server) {
-      if (server.upgrade(req)) {
-        return;
-      }
-      return new Response("Upgrade failed", { status: 500 });
+      server.upgrade(req);
     },
     websocket: {
       message(ws) {

@@ -1,16 +1,26 @@
+import { program } from "commander";
 import { type ChildProcess, fork } from "node:child_process";
 import { join } from "node:path";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { getGameDir, getWatch } from "./env";
 import { getFiles } from "./files";
 import { startWatch } from "./watch";
 
 const bootstrap = async () => {
-  const gameDir = getGameDir();
+  program
+    .name("server loader")
+    .description("run server loader")
+    .option("-d, --dir <dir>", "dir of the game", ".nanoforge/server")
+    .option("--watch", "watch the game dir", false)
+    .parse();
 
-  const paths = getFiles(gameDir);
+  const { dir, watch } = program.opts<{
+    dir: string;
+    watch: boolean;
+  }>();
+
+  const paths = getFiles(dir);
   let mainPath: string | undefined = undefined;
 
   paths.filter(([path, fullPath]) => {
@@ -30,13 +40,14 @@ const bootstrap = async () => {
     }
 
     const __filename = fileURLToPath(import.meta.url);
-    child = fork(join(dirname(__filename), "worker.js"), [
-      mainPath as string,
-      JSON.stringify(paths),
-    ]);
+    child = fork(
+      join(dirname(__filename), "worker.js"),
+      [mainPath as string, JSON.stringify(paths)],
+      { env: process.env },
+    );
   };
 
-  if (getWatch()) startWatch(gameDir, runWorker);
+  if (watch) startWatch(dir, runWorker);
 
   await runWorker();
 };

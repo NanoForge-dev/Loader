@@ -1,8 +1,9 @@
-export const getGameDir = () => {
-  if (process.env.GAME_DIR) return process.env.GAME_DIR;
-  throw new Error("GAME_DIR env variable not found");
-};
+const PREFIX = "NANOFORGE_";
 
-export const getWatch = () => {
-  return process.env.WATCH;
+export const getGameEnv = () => {
+  return Object.fromEntries(
+    Object.entries(process.env)
+      .filter(([key]) => key.startsWith(PREFIX))
+      .map(([key, value]) => [key.replace(PREFIX, ""), value]),
+  );
 };
