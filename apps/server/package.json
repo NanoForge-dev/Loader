@@ -53,6 +53,9 @@
     "changelog": "git cliff --prepend ./CHANGELOG.md -u -c ./cliff.toml -r ../../ --include-path 'apps/server/*'",
     "release": "cliff-jumper"
   },
+  "dependencies": {
+    "commander": "catalog:core"
+  },
   "devDependencies": {
     "@favware/cliff-jumper": "catalog:ci",
     "@nanoforge-dev/utils-eslint-config": "catalog:lint",
@@ -77,8 +80,5 @@
     "src/**/*.ts": [
       "eslint --fix"
     ]
-  },
-  "pnpm": {
-    "neverBuiltDependencies": []
   }
 }

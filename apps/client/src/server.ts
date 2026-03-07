@@ -1,15 +1,7 @@
+import { program } from "commander";
 import { join } from "node:path";
 
-import {
-  getCert,
-  getGameDir,
-  getKey,
-  getPort,
-  getPublicEnv,
-  getWatch,
-  getWatchPort,
-  getWatchServerGameDir,
-} from "./env";
+import { getGameEnv } from "./env";
 import { updateManifest } from "./manifest";
 import { startWatch } from "./watch";
 
@@ -19,7 +11,27 @@ type IManifest = {
   watch: { enable: false } | { enable: true; url: string };
 };
 
-const watch = getWatch() === "true";
+program
+  .name("client loader")
+  .description("run client loader")
+  .option("-p, --port <port>", "port of the client", "3000")
+  .option("-d, --dir <dir>", "dir of the game", ".nanoforge/client")
+  .option("--watch", "watch the game dir", false)
+  .option("--watch-port <watch port>", "port for watch websocket (default: first port available)")
+  .option("--watch-server-dir <watch server dir>", "dir of the server for watch it too")
+  .option("--cert <cert>", "cert file for https")
+  .option("--key <key>", "key file for https")
+  .parse();
+
+const { port, dir, watch, watchPort, watchServerDir, cert, key } = program.opts<{
+  port: string;
+  dir: string;
+  watch: boolean;
+  watchPort?: string;
+  watchServerDir?: string;
+  cert?: string;
+  key?: string;
+}>();
 
 export const MANIFEST: IManifest = {
   version: "",
@@ -35,15 +47,9 @@ const resolveWebDir = (str: string) => {
     .replace(/^file:\/\//, "");
 };
 
-const port = getPort();
-const gameDir = getGameDir();
-
 const headers = {
   "Access-Control-Allow-Methods": "GET",
 };
-
-const cert = getCert();
-const key = getKey();
 
 const tls = cert && key ? { cert: Bun.file(cert), key: Bun.file(key) } : undefined;
 
@@ -77,17 +83,17 @@ const server = Bun.serve({
       }
     },
     "/manifest": async () => {
-      await updateManifest(gameDir);
+      await updateManifest(dir);
       return Response.json(MANIFEST, {
         headers,
       });
     },
     "/env": () => {
-      return Response.json(getPublicEnv(), { headers });
+      return Response.json(getGameEnv(), { headers });
     },
     "/game/*": (req) => {
       const path = new URL(req.url).pathname.replace("/game", "");
-      const file = Bun.file(join(gameDir, path));
+      const file = Bun.file(join(dir, path));
       return new Response(file, {
         headers,
       });
@@ -97,4 +103,4 @@ const server = Bun.serve({
 
 console.log(`Client started on url ${server.url.toString()}`);
 
-if (watch) startWatch(gameDir, getWatchPort(), getWatchServerGameDir());
+if (watch) startWatch(dir, watchPort, watchServerDir);

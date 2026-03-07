@@ -53,7 +53,8 @@
   },
   "dependencies": {
     "@nanoforge-dev/loader-website": "workspace:*",
-    "bun": "catalog:core"
+    "bun": "catalog:core",
+    "commander": "catalog:core"
   },
   "devDependencies": {
     "@favware/cliff-jumper": "catalog:ci",
@@ -79,8 +80,5 @@
     "src/**/*.ts": [
       "eslint --fix"
     ]
-  },
-  "pnpm": {
-    "neverBuiltDependencies": []
   }
 }

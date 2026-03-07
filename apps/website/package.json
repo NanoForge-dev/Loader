@@ -65,8 +65,5 @@
     "src/**/*.{ts,html,css}": [
       "eslint --fix"
     ]
-  },
-  "pnpm": {
-    "neverBuiltDependencies": []
   }
 }

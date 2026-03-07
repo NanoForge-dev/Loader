@@ -1,4 +1,5 @@
 import { GameCache } from "./cache/cache";
+import { getEnv } from "./env";
 import { runGame } from "./game";
 import { loadGameFiles } from "./loader";
 import { getManifest } from "./manifest";
@@ -16,8 +17,9 @@ const runLoad = async () => {
   const cache = new GameCache();
   const extendedManifest = await cache.updateCache(manifest, true);
   const [files, mainModule] = await loadGameFiles(extendedManifest);
+  const env = await getEnv();
   setLoadingStatus("Starting game");
-  runGame(mainModule, { files });
+  runGame(mainModule, { files, env });
 };
 
 runLoad()
