@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [@nanoforge-dev/loader-server@1.2.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-server@1.1.0...@nanoforge-dev/loader-server@1.2.0) - (2026-03-08)
+
+## Features
+
+- Add env handling and loader params (#67) ([8bba275](https://github.com/NanoForge-dev/Loader/commit/8bba2751abc4cef3f579ed40a0486ead2c0fae35)) by @Exeloo
+
 # [@nanoforge-dev/loader-server@1.1.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader-server@1.0.1...@nanoforge-dev/loader-server@1.1.0) - (2026-01-11)
 
 ## Documentation
