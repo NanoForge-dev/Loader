@@ -7,7 +7,7 @@ catalogs:
     turbo: ^2.8.17
     typescript: ^5.9.3
   ci:
-    '@commitlint/cli': ^20.4.3
+    '@commitlint/cli': ^20.5.0
     '@commitlint/config-conventional': ^20.4.3
     '@favware/cliff-jumper': ^6.0.0
     '@nanoforge-dev/actions': ^1.2.3
