@@ -14,9 +14,9 @@ catalogs:
     husky: ^9.1.7
     lint-staged: ^16.4.0
   core:
-    '@types/bun': ^1.3.10
+    '@types/bun': ^1.3.13
     '@types/node': ^25.5.2
-    bun: ^1.3.10
+    bun: ^1.3.13
     commander: ^14.0.3
   lint:
     '@nanoforge-dev/utils-eslint-config': ^1.0.2
