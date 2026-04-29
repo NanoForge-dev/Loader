@@ -225,3 +225,6 @@ dist
 
 # Turbo
 .turbo/
+
+#nx
+.nx/

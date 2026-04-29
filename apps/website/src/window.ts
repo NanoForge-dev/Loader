@@ -8,7 +8,7 @@ let totalFiles = 0;
 
 export const changeWindowToGame = async () => {
   setHiddenStatusOnId(IDS.loader, true);
-  setHiddenStatusOnId(IDS.canvas, false);
+  setHiddenStatusOnId(IDS.container, false);
   await delay(500);
   const loader = document.getElementById(IDS.loader);
   if (loader) loader.classList.add("fade-out");
@@ -16,7 +16,7 @@ export const changeWindowToGame = async () => {
 };
 
 export const changeWindowToLoader = async () => {
-  setHiddenStatusOnId(IDS.canvas, true);
+  setHiddenStatusOnId(IDS.container, true);
   setHiddenStatusOnId(IDS.loader, false);
   logger.info("Change window to loader");
 };
