@@ -15,7 +15,7 @@ The website is a client-side application that:
 - Fetches the game manifest from the loader server
 - Caches game files in browser storage
 - Loads and executes the game's main module
-- Provides a canvas and file access to the game
+- Provides a container and file access to the game
 - Supports hot reload via WebSocket
 
 Modules
@@ -57,11 +57,11 @@ Handles game execution and window management.
 
     function runGame(
       mainModule: any,
-      options: Omit<IGameOptions, "canvas">
+      options: Omit<IGameOptions, "container">
     ): void
 
 - Switches the UI to game mode
-- Gets the canvas element
+- Gets the container element
 - Calls the game's ``main()`` function with options
 
 cache
@@ -226,7 +226,7 @@ Options passed to the game's main function:
 .. code-block:: typescript
 
     interface IGameOptions {
-      canvas: HTMLCanvasElement;
+      container: HTMLDivElement;
       files: Map<string, string>;
     }
 

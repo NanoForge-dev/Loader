@@ -1,5 +1,5 @@
 export interface IGameOptions {
-  canvas: HTMLCanvasElement;
+  container: HTMLDivElement;
   files: Map<string, string>;
   env: Record<string, string | undefined>;
 }

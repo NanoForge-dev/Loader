@@ -1,0 +1,20 @@
+[0m[2m[35m$[0m [2m[1mbun i[0m
+[0m[1mbun install [0m[2mv1.3.2 (b131639c)[0m
+Saved lockfile
+
+[0m[32m+[0m [1m@eslint/js[0m[2m@9.22.0[0m
+[0m[32m+[0m [1m@html-eslint/eslint-plugin[0m[2m@0.35.2[0m
+[0m[32m+[0m [1m@html-eslint/parser[0m[2m@0.35.2[0m
+[0m[32m+[0m [1m@trivago/prettier-plugin-sort-imports[0m[2m@5.2.2[0m
+[0m[32m+[0m [1m@types/bun[0m[2m@1.2.4[0m
+[0m[32m+[0m [1meslint[0m[2m@9.22.0[0m
+[0m[32m+[0m [1meslint-config-prettier[0m[2m@10.1.1[0m
+[0m[32m+[0m [1meslint-plugin-format[0m[2m@1.0.1[0m
+[0m[32m+[0m [1meslint-plugin-prettier[0m[2m@5.2.3[0m
+[0m[32m+[0m [1mglobals[0m[2m@16.0.0[0m
+[0m[32m+[0m [1mjavascript-obfuscator[0m[2m@4.1.1[0m
+[0m[32m+[0m [1mprettier[0m[2m@3.5.3[0m
+[0m[32m+[0m [1mtypescript-eslint[0m[2m@8.26.1[0m
+[0m[32m+[0m [1mtypescript[0m[2m@5.8.2[0m
+
+[32m237[0m packages[0m installed [0m[2m[[1m99.00ms[0m[2m][0m[0m

@@ -1,0 +1,15 @@
+[0m[2m[35m$[0m [2m[1mbun --serve src --hostname 0.0.0.0 --port 3000[0m
+2025-12-03T03:34:55.407Z INFO (Loader): Starting loading game
+[0m[1m36 |[0m [0m[35mexport[0m [0m[35mconst[0m setLoadingTotalFiles = (total: [0m[34mnumber[0m) => {
+[0m[1m37 |[0m   totalFiles = total[0m[2m;[0m
+[0m[1m38 |[0m }[0m[2m;[0m
+[0m[1m39 |[0m 
+[0m[1m40 |[0m [0m[35mexport[0m [0m[35mconst[0m setError = (error: [0m[34mstring[0m) => {
+[0m[1m41 |[0m   [0m[35mconst[0m loaderErrorMessage = document[0m[3m[1m.getElementById[0m(IDS.loaderErrorMessage)[0m[2m;[0m
+                                  [31m[1m^[0m
+[0m[31mReferenceError[0m[2m:[0m [1mdocument is not defined[0m
+[0m      [2mat [0m[0m[1m[3msetError[0m[2m ([0m[0m[36m[2m/home/leoout/eip/loader/apps/web/[0m[36msrc/window.ts[0m[2m:[0m[33m41[0m[2m:[33m30[0m[2m)[0m
+[0m      [2mat [0m[0m[2m<anonymous>[0m[2m ([0m[0m[36m[2m/home/leoout/eip/loader/apps/web/[0m[36msrc/index.ts[0m[2m:[0m[33m26[0m[2m:[33m5[0m[2m)[0m
+[0m
+[2mBun v1.3.2 (Linux x64)[0m
+[0m[31merror[0m[2m:[0m script [1m"dev"[0m exited with code 1[0m

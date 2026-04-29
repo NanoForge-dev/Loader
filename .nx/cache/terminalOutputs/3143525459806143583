@@ -1,0 +1,7 @@
+[0m[2m[35m$[0m [2m[1mbun --origin 0.0.0.0 src/index.html[0m
+[34;7m DEV [0m [1;34m[5mBun[0m [1;34mv1.3.2[0m [2mready in[0m [1m9.00[0m ms
+
+[1;34m➜[0m [36mhttp://localhost:3000/[0m
+
+[2mPress [2;36mh + Enter[39;2m to show shortcuts[0m
+[32mBundled page in 2ms[0m[2m:[0m src/index.html

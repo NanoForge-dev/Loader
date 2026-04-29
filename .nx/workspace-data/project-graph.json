@@ -1,0 +1,335 @@
+{
+  "nodes": {
+    "nanoforge-loader-server": {
+      "name": "nanoforge-loader-server",
+      "type": "lib",
+      "data": {
+        "root": "apps/server",
+        "name": "nanoforge-loader-server",
+        "tags": ["npm:private"],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "setup",
+              "build",
+              "build:raw",
+              "clean",
+              "dev",
+              "start",
+              "lint",
+              "fix",
+              "taze",
+              "lint-staged"
+            ]
+          },
+          "description": "NanoForge Loader - Server",
+          "js": {
+            "packageName": "nanoforge-loader-server",
+            "isInPackageManagerWorkspaces": true
+          }
+        },
+        "targets": {
+          "setup": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "setup"
+            },
+            "metadata": {
+              "scriptContent": "bun i",
+              "runCommand": "bun run setup -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "bun run clean && bun run build:raw",
+              "runCommand": "bun run build -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:raw": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:raw"
+            },
+            "metadata": {
+              "scriptContent": "bun build src/index.ts --outdir dist --target browser",
+              "runCommand": "bun run build:raw -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "clean": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean"
+            },
+            "metadata": {
+              "scriptContent": "rm -rf dist",
+              "runCommand": "bun run clean -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            },
+            "metadata": {
+              "scriptContent": "bun src/server.ts --watch",
+              "runCommand": "bun run dev -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "start": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "start"
+            },
+            "metadata": {
+              "scriptContent": "bun dist/index.js",
+              "runCommand": "bun run start -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint . && prettier --check . '!.cloud/**'",
+              "runCommand": "bun run lint -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "cache": true
+          },
+          "fix": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "fix"
+            },
+            "metadata": {
+              "scriptContent": "eslint . --fix && prettier --write . '!.cloud/**'",
+              "runCommand": "bun run fix -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "cache": true
+          },
+          "taze": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "taze"
+            },
+            "metadata": {
+              "scriptContent": "taze major -w",
+              "runCommand": "bun run taze -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint-staged": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint-staged"
+            },
+            "metadata": {
+              "scriptContent": "lint-staged",
+              "runCommand": "bun run lint-staged -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    },
+    "nanoforge-loader-web": {
+      "name": "nanoforge-loader-web",
+      "type": "lib",
+      "data": {
+        "root": "apps/web",
+        "name": "nanoforge-loader-web",
+        "tags": ["npm:private"],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "setup",
+              "build",
+              "build:raw",
+              "build:obfuscate",
+              "clean",
+              "dev",
+              "start",
+              "lint",
+              "fix",
+              "taze",
+              "lint-staged"
+            ]
+          },
+          "description": "NanoForge Loader - Web",
+          "js": {
+            "packageName": "nanoforge-loader-web",
+            "isInPackageManagerWorkspaces": true
+          }
+        },
+        "targets": {
+          "setup": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "setup"
+            },
+            "metadata": {
+              "scriptContent": "bun i",
+              "runCommand": "bun run setup -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "bun run clean && bun run build:raw && bun run build:obfuscate",
+              "runCommand": "bun run build -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:raw": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:raw"
+            },
+            "metadata": {
+              "scriptContent": "bun build src/index.html --outdir dist --target browser --env PUBLIC_*",
+              "runCommand": "bun run build:raw -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:obfuscate": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:obfuscate"
+            },
+            "metadata": {
+              "scriptContent": "./scripts/obfuscate.sh dist",
+              "runCommand": "bun run build:obfuscate -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "clean": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean"
+            },
+            "metadata": {
+              "scriptContent": "rm -rf dist",
+              "runCommand": "bun run clean -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            },
+            "metadata": {
+              "scriptContent": "bun src/index.html",
+              "runCommand": "bun run dev -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "start": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "start"
+            },
+            "metadata": {
+              "scriptContent": "bun dist/index.html",
+              "runCommand": "bun run start -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint . && prettier --check . '!.cloud/**'",
+              "runCommand": "bun run lint -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "cache": true
+          },
+          "fix": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "fix"
+            },
+            "metadata": {
+              "scriptContent": "eslint . --fix && prettier --write . '!.cloud/**'",
+              "runCommand": "bun run fix -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "cache": true
+          },
+          "taze": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "taze"
+            },
+            "metadata": {
+              "scriptContent": "taze major -w",
+              "runCommand": "bun run taze -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint-staged": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint-staged"
+            },
+            "metadata": {
+              "scriptContent": "lint-staged",
+              "runCommand": "bun run lint-staged -- undefined"
+            },
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    }
+  },
+  "externalNodes": {},
+  "dependencies": {
+    "nanoforge-loader-server": [],
+    "nanoforge-loader-web": []
+  },
+  "version": "6.0",
+  "errors": [],
+  "computedAt": 1764917384858
+}
