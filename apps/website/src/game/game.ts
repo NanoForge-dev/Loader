@@ -6,12 +6,12 @@ import { changeWindowToGame } from "../window";
 
 const logger = new Logger("Game");
 
-export const runGame = (mainModule: any, options: Omit<IGameOptions, "canvas">) => {
+export const runGame = (mainModule: any, options: Omit<IGameOptions, "container">) => {
   logger.info("Starting game");
   changeWindowToGame();
   mainModule.main({
     ...options,
-    canvas: getElementById(IDS.canvas) as HTMLCanvasElement,
+    container: getElementById(IDS.container) as HTMLDivElement,
   });
   logger.info("Game started");
 };

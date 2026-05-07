@@ -164,7 +164,7 @@ The website package provides the browser-side game loader:
 4. **Game Loading**: Imports the main module and creates a file map for
    the game to access assets.
 
-5. **Game Execution**: Calls the game's ``main()`` function with canvas
+5. **Game Execution**: Calls the game's ``main()`` function with container
    and file references.
 
 6. **Watch Integration**: Subscribes to the WebSocket for hot reload

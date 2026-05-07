@@ -1,5 +1,5 @@
 export const IDS = {
-  canvas: "nanoforge-canvas",
+  container: "nanoforge-container",
   loader: "nanoforge-loader",
 
   loadingStatus: "loading-status",
