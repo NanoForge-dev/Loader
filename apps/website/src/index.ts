@@ -11,6 +11,11 @@ const logger = new Logger("Loader");
 
 const runLoad = async () => {
   logger.info("Starting loading game");
+  if (!window.isSecureContext) {
+    throw new Error(
+      "Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.",
+    );
+  }
 
   const manifest = await getManifest();
   runWatcher(manifest.watch);

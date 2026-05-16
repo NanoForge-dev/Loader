@@ -37,11 +37,12 @@ export const setLoadingTotalFiles = (total: number) => {
   totalFiles = total;
 };
 
-export const setError = (error: string) => {
+export const setError = (error: string | Error | unknown) => {
   const loaderErrorMessage = document.getElementById(IDS.loaderErrorMessage);
 
   if (!loaderErrorMessage) return;
-  loaderErrorMessage.innerText = error;
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  loaderErrorMessage.innerText = errorMessage;
 
   setHiddenStatusOnId(IDS.loadingStatus, true);
   setHiddenStatusOnId(IDS.loaderError, false);
