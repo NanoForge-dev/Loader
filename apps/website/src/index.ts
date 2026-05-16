@@ -27,6 +27,16 @@ const runLoad = async () => {
   runGame(mainModule, { files, env });
 };
 
+window.addEventListener("error", (event) => {
+  setError(event.error || event.message);
+  logger.error(`Runtime error : ${event.message}`);
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  setError(event.reason);
+  logger.error(`Unhandled promise rejection : ${event.reason}`);
+});
+
 runLoad()
   .then(() => {
     logger.info("Game loaded !");

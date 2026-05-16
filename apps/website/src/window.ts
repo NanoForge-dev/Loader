@@ -44,6 +44,9 @@ export const setError = (error: string | Error | unknown) => {
   const errorMessage = error instanceof Error ? error.message : String(error);
   loaderErrorMessage.innerText = errorMessage;
 
+  setHiddenStatusOnId(IDS.container, true);
+  setHiddenStatusOnId(IDS.loader, false);
+
   setHiddenStatusOnId(IDS.loadingStatus, true);
   setHiddenStatusOnId(IDS.loaderError, false);
 };
