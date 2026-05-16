@@ -76,7 +76,7 @@ const server = Bun.serve({
         return new Response(file, {
           headers,
         });
-      } catch (error) {
+      } catch {
         return new Response(null, {
           status: 404,
         });
@@ -91,8 +91,8 @@ const server = Bun.serve({
       } catch (error) {
         console.error("Erreur lors de la génération du manifest:", error);
         return Response.json(
-            { error: "Failed to load manifest", details: String(error) },
-            { status: 500, headers }
+          { error: "Failed to load manifest", details: String(error) },
+          { status: 500, headers },
         );
       }
     },
@@ -103,8 +103,8 @@ const server = Bun.serve({
       } catch (error) {
         console.error("Failed to load environment:", error);
         return Response.json(
-            { error: "Failed to load environment", details: String(error) },
-            { status: 500, headers }
+          { error: "Failed to load environment", details: String(error) },
+          { status: 500, headers },
         );
       }
     },
@@ -114,10 +114,7 @@ const server = Bun.serve({
         const file = Bun.file(join(dir, path));
 
         if (!(await file.exists())) {
-          return Response.json(
-              { error: "Game file not found", path },
-              { status: 404, headers }
-          );
+          return Response.json({ error: "Game file not found", path }, { status: 404, headers });
         }
 
         return new Response(file, {
@@ -126,8 +123,8 @@ const server = Bun.serve({
       } catch (error) {
         console.error(`Error reading game file ${req.url}:`, error);
         return Response.json(
-            { error: "Error reading game file", details: String(error) },
-            { status: 500, headers }
+          { error: "Error reading game file", details: String(error) },
+          { status: 500, headers },
         );
       }
     },
