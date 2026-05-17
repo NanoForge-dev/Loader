@@ -46,6 +46,22 @@ export class GameCache {
   private async _updateCacheFile(fileManifest: IManifestFile): Promise<IExtendedManifestFile> {
     const res = await fetch(`/game/${fileManifest.path.replace(/^\/+/, "")}`);
 
+    if (!res.ok) {
+      let errorMessage = `Failed to download file`;
+      try {
+        const errorData = await res.json();
+
+        if (errorData.path) {
+          errorMessage = `${errorData.error} : ${errorData.path}`;
+        } else {
+          errorMessage = errorData.error || `HTTP Error ${res.status}`;
+        }
+      } catch {
+        errorMessage = `HTTP Error ${res.status} on file ${fileManifest.path}`;
+      }
+      throw new Error(errorMessage);
+    }
+
     const file = await this.fs.getFile(fileManifest.path);
 
     const writable = await file.getWritable();
