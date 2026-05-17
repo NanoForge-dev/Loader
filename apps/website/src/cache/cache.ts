@@ -47,7 +47,7 @@ export class GameCache {
     const res = await fetch(`/game/${fileManifest.path.replace(/^\/+/, "")}`);
 
     if (!res.ok) {
-      let errorMessage = `Failed to download file`;
+      let errorMessage: string;
       try {
         const errorData = await res.json();
 
