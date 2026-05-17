@@ -11,6 +11,11 @@ const logger = new Logger("Loader");
 
 const runLoad = async () => {
   logger.info("Starting loading game");
+  if (!window.isSecureContext) {
+    throw new Error(
+      "Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.",
+    );
+  }
 
   const manifest = await getManifest();
   runWatcher(manifest.watch);
@@ -21,6 +26,16 @@ const runLoad = async () => {
   setLoadingStatus("Starting game");
   runGame(mainModule, { files, env });
 };
+
+window.addEventListener("error", (event) => {
+  setError(event.error || event.message);
+  logger.error(`Runtime error : ${event.message}`);
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  setError(event.reason);
+  logger.error(`Unhandled promise rejection : ${event.reason}`);
+});
 
 runLoad()
   .then(() => {
