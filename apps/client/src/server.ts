@@ -89,7 +89,7 @@ const server = Bun.serve({
           headers,
         });
       } catch (error) {
-        console.error("Erreur lors de la génération du manifest:", error);
+        console.error("Failed to load manifest:", error);
         return Response.json(
           { error: "Failed to load manifest", details: String(error) },
           { status: 500, headers },
