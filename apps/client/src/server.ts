@@ -83,20 +83,50 @@ const server = Bun.serve({
       }
     },
     "/manifest": async () => {
-      await updateManifest(dir);
-      return Response.json(MANIFEST, {
-        headers,
-      });
+      try {
+        await updateManifest(dir);
+        return Response.json(MANIFEST, {
+          headers,
+        });
+      } catch (error) {
+        console.error("Failed to load manifest:", error);
+        return Response.json(
+          { error: "Failed to load manifest", details: String(error) },
+          { status: 500, headers },
+        );
+      }
     },
     "/env": () => {
-      return Response.json(getGameEnv(), { headers });
+      try {
+        const env = getGameEnv();
+        return Response.json({ ...env, tlsEnabled: !!tls }, { headers });
+      } catch (error) {
+        console.error("Failed to load environment:", error);
+        return Response.json(
+          { error: "Failed to load environment", details: String(error) },
+          { status: 500, headers },
+        );
+      }
     },
-    "/game/*": (req) => {
-      const path = new URL(req.url).pathname.replace("/game", "");
-      const file = Bun.file(join(dir, path));
-      return new Response(file, {
-        headers,
-      });
+    "/game/*": async (req) => {
+      try {
+        const path = new URL(req.url).pathname.replace("/game", "");
+        const file = Bun.file(join(dir, path));
+
+        if (!(await file.exists())) {
+          return Response.json({ error: "Game file not found", path }, { status: 404, headers });
+        }
+
+        return new Response(file, {
+          headers,
+        });
+      } catch (error) {
+        console.error(`Error reading game file ${req.url}:`, error);
+        return Response.json(
+          { error: "Error reading game file", details: String(error) },
+          { status: 500, headers },
+        );
+      }
     },
   },
 });
