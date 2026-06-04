@@ -3,5 +3,6 @@
   "name": "loader-server",
   "org": "nanoforge-dev",
   "packagePath": "apps/server",
+  "tagTemplate": "{{new-version}}",
   "identifierBase": false
 }

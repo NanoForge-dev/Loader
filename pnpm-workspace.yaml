@@ -1,32 +1,35 @@
 packages:
   - apps/*
 
+allowBuilds:
+  bun: true
+
 catalogs:
   build:
     tsup: ^8.5.1
-    turbo: ^2.9.4
-    typescript: ^5.9.3
+    turbo: ^2.9.16
+    typescript: ^6.0.3
   ci:
-    '@commitlint/cli': ^20.5.0
-    '@commitlint/config-conventional': ^20.5.0
+    '@commitlint/cli': ^21.0.2
+    '@commitlint/config-conventional': ^21.0.2
     '@favware/cliff-jumper': ^6.0.0
-    '@nanoforge-dev/actions': ^1.2.3
+    '@nanoforge-dev/actions': ^2.1.2
     husky: ^9.1.7
-    lint-staged: ^16.4.0
+    lint-staged: ^17.0.7
   core:
-    '@types/bun': ^1.3.13
-    '@types/node': ^25.5.2
+    '@types/bun': ^1.3.14
+    '@types/node': ^25.9.1
     bun: ^1.3.13
     commander: ^14.0.3
   lint:
     '@nanoforge-dev/utils-eslint-config': ^1.0.2
     '@nanoforge-dev/utils-prettier-config': ^1.0.2
     '@trivago/prettier-plugin-sort-imports': ^6.0.2
-    eslint: ^10.2.0
-    prettier: ^3.8.1
+    eslint: ^10.4.1
+    prettier: ^3.8.3
   schematics:
     '@angular-devkit/core': ^21.1.1
     '@angular-devkit/schematics': ^21.1.1
 
-onlyBuiltDependencies:
-  - bun
+minimumReleaseAgeExclude:
+  - '@nanoforge-dev/actions@2.1.2'
