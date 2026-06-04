@@ -3,5 +3,6 @@
   "name": "loader-website",
   "org": "nanoforge-dev",
   "packagePath": "apps/website",
+  "tagTemplate": "{{new-version}}",
   "identifierBase": false
 }
