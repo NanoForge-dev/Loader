@@ -16,31 +16,67 @@
 
 ## About
 
-This repository contains the Loader Client of NanoForge. Check [releases][github-releases] to see versions of the Loader. Nanoforge is a powerful game engine for web browser.
+This package contains the Client Loader of NanoForge. It is part of the [NanoForge Loader][loader-source] monorepo. Check [releases][github-releases] to see versions. NanoForge is a powerful game engine for web browsers.
+
+The client loader is a Bun HTTP server that serves the browser-facing side of a NanoForge project. It delivers the loader UI, the compiled game files and the game environment to the browser, and optionally streams live-reload events via WebSocket.
 
 ## Usage
 
-To use Nanoforge Loader, please refer to the [CLI documentation][cli-source] !
+To use the NanoForge Loader, please refer to the [CLI documentation][cli-source]!
 
-First, install the CLI :
+First, install the CLI:
 
 ```bash
 npm install -g @nanoforge-dev/cli
 ```
 
-Create a new project :
+Create a new project:
 
 ```bash
 nf new
 ```
 
-And then build and start it :
+Then build and start it:
 
 ```bash
 cd <path_to_my_project>
 nf build
 nf start
 ```
+
+## Routes
+
+The client loader exposes the following HTTP routes:
+
+| Route           | Description                                                           |
+| --------------- | --------------------------------------------------------------------- |
+| `GET /`         | Serves the `loader-website` HTML application                          |
+| `GET /*`        | Serves static assets bundled with `loader-website`                    |
+| `GET /manifest` | Returns the list of game files and the current version as JSON        |
+| `GET /env`      | Returns `NANOFORGE_*` environment variables (prefix stripped) as JSON |
+| `GET /game/*`   | Serves compiled game client files from the configured game directory  |
+
+## Options
+
+| Option                     | Default             | Description                                    |
+| -------------------------- | ------------------- | ---------------------------------------------- |
+| `-p, --port <port>`        | `3000`              | Port the HTTP server listens on                |
+| `-d, --dir <dir>`          | `.nanoforge/client` | Directory of compiled client game files        |
+| `--watch`                  | `false`             | Enable file watcher and browser hot-reload     |
+| `--watch-port <port>`      | auto                | Port for the WebSocket watch server            |
+| `--watch-server-dir <dir>` | —                   | Also watch a server game directory for changes |
+| `--cert <file>`            | —                   | TLS certificate file (enables HTTPS)           |
+| `--key <file>`             | —                   | TLS private key file (enables HTTPS)           |
+
+## Watch Mode
+
+When `--watch` is enabled, the client loader starts a WebSocket server on `--watch-port` (or a random free port). Any file change in the game directory causes the server to broadcast an `update` message. The `loader-website` frontend listens for this message and reloads the page automatically.
+
+You can also pass `--watch-server-dir` to trigger a reload when the server game directory changes — useful when both sides are compiled simultaneously.
+
+## HTTPS / TLS
+
+Pass `--cert` and `--key` to enable HTTPS. The `loader-website` frontend will detect TLS and communicate this to the game via the `/env` response (`tlsEnabled: true`). HTTPS is required when the browser's secure context is enforced (e.g. to use the Origin Private File System).
 
 ## Contributing
 
@@ -53,5 +89,6 @@ If you don't understand something in the documentation, you are experiencing pro
 [contributing]: https://github.com/NanoForge-dev/Loader/blob/main/.github/CONTRIBUTING.md
 [discussions]: https://github.com/NanoForge-dev/Loader/discussions
 [cli-source]: https://github.com/NanoForge-dev/CLI
+[loader-source]: https://github.com/NanoForge-dev/Loader
 [github-releases]: https://github.com/NanoForge-dev/Loader/releases
 [good-first-issue]: https://github.com/NanoForge-dev/Loader/contribute

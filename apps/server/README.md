@@ -16,31 +16,61 @@
 
 ## About
 
-This repository contains the Loader Server of NanoForge. Check [releases][github-releases] to see versions of the Loader. Nanoforge is a powerful game engine for web browser.
+This package contains the Server Loader of NanoForge. It is part of the [NanoForge Loader][loader-source] monorepo. Check [releases][github-releases] to see versions. NanoForge is a powerful game engine for web browsers.
+
+The server loader is a Node.js process that runs the server-side game code of a NanoForge project. It scans a compiled game directory, then forks an isolated worker process that loads `main.js` and calls its exported `main()` function.
 
 ## Usage
 
-To use Nanoforge Loader, please refer to the [CLI documentation][cli-source] !
+To use the NanoForge Loader, please refer to the [CLI documentation][cli-source]!
 
-First, install the CLI :
+First, install the CLI:
 
 ```bash
 npm install -g @nanoforge-dev/cli
 ```
 
-Create a new project :
+Create a new project:
 
 ```bash
 nf new
 ```
 
-And then build and start it :
+Then build and start it:
 
 ```bash
 cd <path_to_my_project>
 nf build
 nf start
 ```
+
+## How It Works
+
+The server loader runs in two processes:
+
+1. **Server** (`server.js`) — the entry point. It scans the game directory, locates `/main.js`, and forks the worker. In `--watch` mode it restarts the worker whenever a file changes.
+2. **Worker** (`worker.js`) — the isolated child process. It requires the game's `main.js` and calls `main({ files, env })`, where `files` is a map of all game file paths and `env` contains the forwarded environment variables.
+
+## Options
+
+| Option            | Default             | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| `-d, --dir <dir>` | `.nanoforge/server` | Directory of compiled server game files          |
+| `--watch`         | `false`             | Enable file watcher and worker restart on change |
+
+## Watch Mode
+
+When `--watch` is enabled, the loader watches the game directory recursively. On any file change, the running worker is killed and a new worker is immediately forked with a fresh state. Changes are debounced to 100 ms to avoid redundant restarts during bulk builds.
+
+## Environment Variables
+
+The server loader reads all environment variables prefixed with `NANOFORGE_`, strips the prefix, and passes them to the game as a plain object:
+
+```
+NANOFORGE_MY_VAR=hello  →  { MY_VAR: "hello" }
+```
+
+These variables are available inside the game via the `env` field of the `main()` options.
 
 ## Contributing
 
@@ -53,5 +83,6 @@ If you don't understand something in the documentation, you are experiencing pro
 [contributing]: https://github.com/NanoForge-dev/Loader/blob/main/.github/CONTRIBUTING.md
 [discussions]: https://github.com/NanoForge-dev/Loader/discussions
 [cli-source]: https://github.com/NanoForge-dev/CLI
+[loader-source]: https://github.com/NanoForge-dev/Loader
 [github-releases]: https://github.com/NanoForge-dev/Loader/releases
 [good-first-issue]: https://github.com/NanoForge-dev/Loader/contribute

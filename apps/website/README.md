@@ -16,31 +16,53 @@
 
 ## About
 
-This repository contains the Loader Website of NanoForge. Check [releases][github-releases] to see versions of the Loader. Nanoforge is a powerful game engine for web browser.
+This package contains the Website Loader of NanoForge. It is part of the [NanoForge Loader][loader-source] monorepo. Check [releases][github-releases] to see versions. NanoForge is a powerful game engine for web browsers.
+
+The website loader is a browser application (HTML + TypeScript) bundled as static assets and served by `loader-client`. It is the loading screen the player sees before the game starts: it downloads the game files, caches them locally in the browser and then bootstraps the game.
 
 ## Usage
 
-To use Nanoforge Loader, please refer to the [CLI documentation][cli-source] !
+To use the NanoForge Loader, please refer to the [CLI documentation][cli-source]!
 
-First, install the CLI :
+First, install the CLI:
 
 ```bash
 npm install -g @nanoforge-dev/cli
 ```
 
-Create a new project :
+Create a new project:
 
 ```bash
 nf new
 ```
 
-And then build and start it :
+Then build and start it:
 
 ```bash
 cd <path_to_my_project>
 nf build
 nf start
 ```
+
+## Loading Sequence
+
+When the browser opens the loader URL, the following steps happen in order:
+
+1. **Fetch manifest** — requests `/manifest` to get the game version and the list of files.
+2. **Verify cache** — checks whether the game files from the previous session are still present in the browser's Origin Private File System (OPFS).
+3. **Download files** — if the cache is stale or missing, downloads each game file from `/game/*` and writes it into OPFS, showing a progress bar and the current file name.
+4. **Fetch environment** — requests `/env` to get the `NANOFORGE_*` variables forwarded by the server.
+5. **Bootstrap game** — dynamically imports `/main.js` from the local cache, calls its exported `main({ files, env, container })` and hides the loading screen.
+
+If any step fails, the error message is displayed on screen instead of a blank page.
+
+## Watch Mode
+
+When the server enables watch mode, the manifest includes a WebSocket URL. The website loader connects to this URL and reloads the page automatically whenever it receives an `update` message — enabling live-reload during development.
+
+## Requirements
+
+The loader requires a **secure context** (HTTPS or `localhost`) because it uses the browser's Origin Private File System API to cache game files locally. Starting the client loader with `--cert` and `--key` satisfies this requirement in production.
 
 ## Contributing
 
@@ -53,5 +75,6 @@ If you don't understand something in the documentation, you are experiencing pro
 [contributing]: https://github.com/NanoForge-dev/Loader/blob/main/.github/CONTRIBUTING.md
 [discussions]: https://github.com/NanoForge-dev/Loader/discussions
 [cli-source]: https://github.com/NanoForge-dev/CLI
+[loader-source]: https://github.com/NanoForge-dev/Loader
 [github-releases]: https://github.com/NanoForge-dev/Loader/releases
 [good-first-issue]: https://github.com/NanoForge-dev/Loader/contribute
