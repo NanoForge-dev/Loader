@@ -65,7 +65,7 @@ const server = Bun.serve({
     },
     "/*": async (req) => {
       try {
-        const path = new URL(req.url).pathname;
+        const path = decodeURIComponent(new URL(req.url).pathname);
         const file = Bun.file(resolveWebDir(path));
 
         if (!(await file.exists()))
@@ -110,7 +110,7 @@ const server = Bun.serve({
     },
     "/game/*": async (req) => {
       try {
-        const path = new URL(req.url).pathname.replace("/game", "");
+        const path = decodeURIComponent(new URL(req.url).pathname.replace("/game", ""));
         const file = Bun.file(join(dir, path));
 
         if (!(await file.exists())) {
