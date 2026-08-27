@@ -10,18 +10,67 @@ import { Logger } from "../utils/logger.utils";
 import { setVersion } from "../version";
 import { setLoadingStatus, setLoadingTotalFiles } from "../window";
 
+/**
+ * The game-file cache lives in the Origin Private File System, which - unlike
+ * `localStorage` or an in-memory cache - is shared by every tab/document open on
+ * this origin. `Web Locks` serializes the destructive part of a rebuild (clearing
+ * the cache directory and rewriting every file) across those tabs, so a lock name
+ * scoped to this app/origin is enough; there is nothing tab-specific to add to it.
+ */
+const CACHE_LOCK_NAME = "nanoforge-game-cache";
+
+/**
+ * Runs `fn` while holding the cross-tab cache lock. Without this, two tabs
+ * rebuilding the shared OPFS cache at the same time can race: one tab's
+ * `directory.clear()` or file rewrite can invalidate a `blob:` URL another tab
+ * already handed out for the same file (surfaces as e.g. a fetch/`<img>` failing
+ * with `net::ERR_UPLOAD_FILE_CHANGED`, and that URL can never succeed again).
+ *
+ * Falls back to just running `fn` on browsers without the Web Locks API - such a
+ * browser loses the cross-tab protection, but behaves exactly as it did before
+ * this lock was introduced.
+ */
+async function withCacheLock<T>(fn: () => Promise<T>): Promise<T> {
+  if (typeof navigator === "undefined" || !navigator.locks) return fn();
+  // `LockGrantedCallback` is typed as `(lock) => T`, not `(lock) => T | PromiseLike<T>`,
+  // even though the real API (like `setTimeout`/array callbacks elsewhere) happily
+  // awaits a callback that returns a promise before releasing the lock. Awaiting
+  // here lets `Awaited<...>` unwrap the resulting `Promise<Promise<T>>` correctly
+  // instead of reaching for an `as` cast.
+  return await navigator.locks.request(CACHE_LOCK_NAME, fn);
+}
+
 export class GameCache {
   private readonly logger: Logger = new Logger("Cache");
   private readonly fs: FileSystemManager = new FileSystemManager("game");
 
   async updateCache(manifest: IManifest, force = false): Promise<IExtendedManifest> {
     this.logger.info("Starting cache game files");
-    let extendedManifest: IExtendedManifest | undefined = await this._parseCache(manifest);
-    if (force || !isManifestUpToDate(manifest) || !extendedManifest)
-      extendedManifest = await this._updateCacheProcess(manifest);
+
+    let extendedManifest = await this._tryReuseCache(manifest, force);
+
+    if (!extendedManifest) {
+      extendedManifest = await withCacheLock(async () => {
+        // A concurrent tab may have already rebuilt the cache for this exact
+        // manifest while we were waiting for the lock - reuse its result instead
+        // of redundantly clearing and re-downloading everything a second time.
+        return (
+          (await this._tryReuseCache(manifest, force)) ?? (await this._updateCacheProcess(manifest))
+        );
+      });
+    }
+
     setVersion(manifest.version);
     this.logger.info("Game files cached");
-    return extendedManifest as IExtendedManifest;
+    return extendedManifest;
+  }
+
+  private async _tryReuseCache(
+    manifest: IManifest,
+    force: boolean,
+  ): Promise<IExtendedManifest | undefined> {
+    if (force || !isManifestUpToDate(manifest)) return undefined;
+    return this._parseCache(manifest);
   }
 
   private async _updateCacheProcess(manifest: IManifest): Promise<IExtendedManifest> {

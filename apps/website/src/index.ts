@@ -20,7 +20,11 @@ const runLoad = async () => {
   const manifest = await getManifest();
   runWatcher(manifest.watch);
   const cache = new GameCache();
-  const extendedManifest = await cache.updateCache(manifest, true);
+  // `force` defaults to false: when the OPFS cache already matches the current
+  // manifest version, reuse it instead of clearing and re-downloading every game
+  // file on every load. Forcing this unconditionally is also what used to make a
+  // cross-tab OPFS race guaranteed on every single page load (see GameCache).
+  const extendedManifest = await cache.updateCache(manifest);
   const [files, mainModule] = await loadGameFiles(extendedManifest);
   const env = await getEnv();
   setLoadingStatus("Starting game");

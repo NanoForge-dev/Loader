@@ -15,5 +15,5 @@ export const isManifestUpToDate = (manifest: IManifest): boolean => {
   setLoadingStatus("Verifying manifest");
   const currentVersion = getVersion();
   if (!currentVersion || currentVersion !== manifest.version) return false;
-  return false;
+  return true;
 };
