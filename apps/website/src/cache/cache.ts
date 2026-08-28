@@ -10,18 +10,41 @@ import { Logger } from "../utils/logger.utils";
 import { setVersion } from "../version";
 import { setLoadingStatus, setLoadingTotalFiles } from "../window";
 
+const CACHE_LOCK_NAME = "nanoforge-game-cache";
+
+async function withCacheLock<T>(fn: () => Promise<T>): Promise<T> {
+  if (typeof navigator === "undefined" || !navigator.locks) return fn();
+  return await navigator.locks.request(CACHE_LOCK_NAME, fn);
+}
+
 export class GameCache {
   private readonly logger: Logger = new Logger("Cache");
   private readonly fs: FileSystemManager = new FileSystemManager("game");
 
   async updateCache(manifest: IManifest, force = false): Promise<IExtendedManifest> {
     this.logger.info("Starting cache game files");
-    let extendedManifest: IExtendedManifest | undefined = await this._parseCache(manifest);
-    if (force || !isManifestUpToDate(manifest) || !extendedManifest)
-      extendedManifest = await this._updateCacheProcess(manifest);
+
+    let extendedManifest = await this._tryReuseCache(manifest, force);
+
+    if (!extendedManifest) {
+      extendedManifest = await withCacheLock(async () => {
+        return (
+          (await this._tryReuseCache(manifest, force)) ?? (await this._updateCacheProcess(manifest))
+        );
+      });
+    }
+
     setVersion(manifest.version);
     this.logger.info("Game files cached");
-    return extendedManifest as IExtendedManifest;
+    return extendedManifest;
+  }
+
+  private async _tryReuseCache(
+    manifest: IManifest,
+    force: boolean,
+  ): Promise<IExtendedManifest | undefined> {
+    if (force || !isManifestUpToDate(manifest)) return undefined;
+    return this._parseCache(manifest);
   }
 
   private async _updateCacheProcess(manifest: IManifest): Promise<IExtendedManifest> {

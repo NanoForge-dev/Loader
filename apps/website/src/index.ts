@@ -20,7 +20,7 @@ const runLoad = async () => {
   const manifest = await getManifest();
   runWatcher(manifest.watch);
   const cache = new GameCache();
-  const extendedManifest = await cache.updateCache(manifest, true);
+  const extendedManifest = await cache.updateCache(manifest);
   const [files, mainModule] = await loadGameFiles(extendedManifest);
   const env = await getEnv();
   setLoadingStatus("Starting game");
