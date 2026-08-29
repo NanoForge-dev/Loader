@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.5](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5) - (2026-08-29)
+
+## Bug Fixes
+
+- **website:** Stop cross-tab OPFS cache race that breaks asset loading (#101) ([10cf29a](https://github.com/NanoForge-dev/Loader/commit/10cf29a5ab2312e5fc05a54600a30b687c859b6e)) by @Tchips46
+- Handle uri encode special characters (#100) ([93e51ae](https://github.com/NanoForge-dev/Loader/commit/93e51aee95d6fcf7ee84ae45400e9adab86e4de6)) by @josephinecr
+
 # [1.4.0](https://github.com/NanoForge-dev/Loader/tree/1.4.0) - (2026-06-29)
 
 ## Documentation
