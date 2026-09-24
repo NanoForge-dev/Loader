@@ -44,9 +44,9 @@
   "funding": "https://github.com/NanoForge-dev/Loader?sponsor",
   "scripts": {
     "build": "pnpm run build:server && pnpm run build:worker",
-    "build:server": "bun build src/server.ts --outdir dist --target node",
-    "build:worker": "bun build src/worker.ts --outdir dist --target node",
-    "start": "node dist/server.js",
+    "build:server": "bun build src/server.ts --outdir dist --target bun",
+    "build:worker": "bun build src/worker.ts --outdir dist --target bun",
+    "start": "bun run dist/server.js",
     "lint": "prettier --check . && eslint --format=pretty src",
     "format": "prettier --write . && eslint --fix --format=pretty src",
     "prepack": "pnpm run build && pnpm run lint",
@@ -54,6 +54,7 @@
     "release": "cliff-jumper"
   },
   "dependencies": {
+    "bun": "catalog:core",
     "commander": "catalog:core"
   },
   "devDependencies": {
@@ -61,17 +62,22 @@
     "@nanoforge-dev/utils-eslint-config": "catalog:lint",
     "@nanoforge-dev/utils-prettier-config": "catalog:lint",
     "@trivago/prettier-plugin-sort-imports": "catalog:lint",
-    "bun": "catalog:core",
+    "@types/bun": "catalog:core",
     "eslint": "catalog:lint",
     "prettier": "catalog:lint",
     "typescript": "catalog:build"
   },
   "packageManager": "pnpm@11.5.1",
   "engines": {
-    "node": "25"
+    "node": "26"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "pnpm": {
+    "allowBuilds": {
+      "bun": true
+    }
   },
   "lint-staged": {
     "**": [
