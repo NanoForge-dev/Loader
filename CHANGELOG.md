@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-# [1.5](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader@1.4.0...@nanoforge-dev/loader@1.5) - (2026-08-29)
+# [1.5.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader@1.4.0...@nanoforge-dev/loader@1.5) - (2026-08-29)
 
 ## Bug Fixes
 

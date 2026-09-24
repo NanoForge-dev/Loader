@@ -15,7 +15,7 @@ program
   .name("client loader")
   .description("run client loader")
   .option("-p, --port <port>", "port of the client", "3000")
-  .option("-d, --dir <dir>", "dir of the game", ".nanoforge/client")
+  .option("-d, --dir <dir>", "dir of the game")
   .option("--watch", "watch the game dir", false)
   .option("--watch-port <watch port>", "port for watch websocket (default: first port available)")
   .option("--watch-server-dir <watch server dir>", "dir of the server for watch it too")
@@ -25,13 +25,15 @@ program
 
 const { port, dir, watch, watchPort, watchServerDir, cert, key } = program.opts<{
   port: string;
-  dir: string;
+  dir?: string;
   watch: boolean;
   watchPort?: string;
   watchServerDir?: string;
   cert?: string;
   key?: string;
 }>();
+
+if (!dir) throw new Error("No game dir specified");
 
 export const MANIFEST: IManifest = {
   version: "",
