@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.5.1](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5.1) - (2026-09-24)
+
+## Bug Fixes
+
+- Add relative path resolution in server and upgrade deps (#105) ([8c34d77](https://github.com/NanoForge-dev/Loader/commit/8c34d773d920165d00e1a4782440370e616d7dc8)) by @Exeloo
+
+## Refactor
+
+- **server:** Migrate from node to bun (#104) ([2abf5fa](https://github.com/NanoForge-dev/Loader/commit/2abf5fa9b2fc4df895dc2adc6d9e487e0e93d9c8)) by @Tchips46
+
 # [1.5](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5) - (2026-08-29)
 
 # [1.4.0](https://github.com/NanoForge-dev/Loader/tree/1.4.0) - (2026-06-29)

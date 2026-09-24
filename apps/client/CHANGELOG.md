@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.5.1](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5.1) - (2026-09-24)
+
+## Bug Fixes
+
+- Add relative path resolution in server and upgrade deps (#105) ([8c34d77](https://github.com/NanoForge-dev/Loader/commit/8c34d773d920165d00e1a4782440370e616d7dc8)) by @Exeloo
+- **website:** Stop cross-tab OPFS cache race that breaks asset loading (#101) ([10cf29a](https://github.com/NanoForge-dev/Loader/commit/10cf29a5ab2312e5fc05a54600a30b687c859b6e)) by @Tchips46
+- Handle uri encode special characters (#100) ([93e51ae](https://github.com/NanoForge-dev/Loader/commit/93e51aee95d6fcf7ee84ae45400e9adab86e4de6)) by @josephinecr
+
+## Refactor
+
+- **server:** Migrate from node to bun (#104) ([2abf5fa](https://github.com/NanoForge-dev/Loader/commit/2abf5fa9b2fc4df895dc2adc6d9e487e0e93d9c8)) by @Tchips46
+
 # [1.5](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5) - (2026-08-29)
 
 ## Bug Fixes
