@@ -1,7 +1,7 @@
 import { program } from "commander";
 import { type ChildProcess, fork } from "node:child_process";
-import { join } from "node:path";
-import { dirname } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import * as process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { getFiles } from "./files";
@@ -11,7 +11,7 @@ const bootstrap = async () => {
   program
     .name("server loader")
     .description("run server loader")
-    .option("-d, --dir <dir>", "dir of the game", ".nanoforge/server")
+    .option("-d, --dir <dir>", "dir of the game")
     .option("--watch", "watch the game dir", false)
     .parse();
 
@@ -20,12 +20,14 @@ const bootstrap = async () => {
     watch: boolean;
   }>();
 
+  if (!dir) throw new Error("No game dir specified");
+
   const paths = getFiles(dir);
   let mainPath: string | undefined = undefined;
 
   paths.filter(([path, fullPath]) => {
     if (path !== "/main.js") return true;
-    mainPath = fullPath;
+    mainPath = resolve(fullPath);
     return false;
   });
 
