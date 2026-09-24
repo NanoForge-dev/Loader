@@ -16,7 +16,7 @@
 
 This repository contains the Loader of NanoForge. Check [releases][github-releases] to see versions of the Loader. NanoForge is a powerful game engine for web browsers.
 
-The Loader is the runtime layer invoked by the [NanoForge CLI][cli-source] when you run `nf start`. It handles both sides of a NanoForge project simultaneously: the **client side** served to the browser and the **server side** running in Node.js.
+The Loader is the runtime layer invoked by the [NanoForge CLI][cli-source] when you run `nf start`. It handles both sides of a NanoForge project simultaneously: the **client side** served to the browser and the **server side** running in Bun.
 
 ## Usage
 
@@ -47,7 +47,7 @@ nf start
 This monorepo provides three packages, each fulfilling a distinct role at runtime.
 
 - `loader-client` : Bun HTTP server that serves the browser loader UI and the compiled client game files. The entry point for everything the browser sees.
-- `loader-server` : Node.js process that runs the compiled server game files in an isolated worker. The entry point for the server-side game logic.
+- `loader-server` : Bun process that runs the compiled server game files in an isolated worker. The entry point for the server-side game logic.
 - `loader-website` : Browser application bundled as a static asset. Displays the loading screen, caches game files in the browser and bootstraps the game.
 
 ### `@nanoforge-dev/loader-client`
@@ -73,7 +73,7 @@ The client loader is a Bun HTTP server that bridges the browser and the compiled
 
 ### `@nanoforge-dev/loader-server`
 
-The server loader is a Node.js process that runs the server-side game code. It:
+The server loader is a Bun process that runs the server-side game code. It:
 
 - Scans the game server directory for compiled files
 - Forks an isolated worker that requires `/main.js` and calls its exported `main()` function
