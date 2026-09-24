@@ -18,7 +18,7 @@
 
 This package contains the Server Loader of NanoForge. It is part of the [NanoForge Loader][loader-source] monorepo. Check [releases][github-releases] to see versions. NanoForge is a powerful game engine for web browsers.
 
-The server loader is a Node.js process that runs the server-side game code of a NanoForge project. It scans a compiled game directory, then forks an isolated worker process that loads `main.js` and calls its exported `main()` function.
+The server loader is a Bun process that runs the server-side game code of a NanoForge project. It scans a compiled game directory, then forks an isolated worker process that loads `main.js` and calls its exported `main()` function.
 
 ## Usage
 

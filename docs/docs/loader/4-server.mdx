@@ -1,13 +1,13 @@
 ---
 title: Server
-description: Node.js process that runs the server-side game code of a NanoForge project
+description: Bun process that runs the server-side game code of a NanoForge project
 ---
 
 import { Tooltip } from "mintlify/components";
 
 ## Overview
 
-`loader-server` is a Node.js process that runs the compiled server-side game code. It scans a built game directory, locates `/main.js`, then forks an isolated child process — the worker — that loads the game and calls its exported `main()` function. The parent process manages the worker lifecycle and restarts it when files change in watch mode.
+`loader-server` is a Bun process that runs the compiled server-side game code. It scans a built game directory, locates `/main.js`, then forks an isolated child process — the worker — that loads the game and calls its exported `main()` function. The parent process manages the worker lifecycle and restarts it when files change in watch mode.
 
 ## Usage
 
