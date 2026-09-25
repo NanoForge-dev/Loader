@@ -6,18 +6,26 @@ import { Logger } from "./utils/logger.utils";
 const logger: Logger = new Logger("Window");
 let totalFiles = 0;
 
+const FADE_OUT_DURATION_MS = 1000;
+
 export const changeWindowToGame = async () => {
-  setHiddenStatusOnId(IDS.loader, true);
   setHiddenStatusOnId(IDS.container, false);
   await delay(500);
   const loader = document.getElementById(IDS.loader);
   if (loader) loader.classList.add("fade-out");
+  await delay(FADE_OUT_DURATION_MS);
+  setHiddenStatusOnId(IDS.loader, true);
   logger.info("Change window to game");
 };
 
-export const changeWindowToLoader = async () => {
+const showLoader = () => {
   setHiddenStatusOnId(IDS.container, true);
+  document.getElementById(IDS.loader)?.classList.remove("fade-out");
   setHiddenStatusOnId(IDS.loader, false);
+};
+
+export const changeWindowToLoader = async () => {
+  showLoader();
   logger.info("Change window to loader");
 };
 
@@ -44,8 +52,7 @@ export const setError = (error: string | Error | unknown) => {
   const errorMessage = error instanceof Error ? error.message : String(error);
   loaderErrorMessage.innerText = errorMessage;
 
-  setHiddenStatusOnId(IDS.container, true);
-  setHiddenStatusOnId(IDS.loader, false);
+  showLoader();
 
   setHiddenStatusOnId(IDS.loadingStatus, true);
   setHiddenStatusOnId(IDS.loaderError, false);
