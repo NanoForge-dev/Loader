@@ -22,6 +22,12 @@
       "inputs": ["**"],
       "outputs": [],
       "outputLogs": "errors-only"
+    },
+    "test:unit": {
+      "dependsOn": ["^test:unit"],
+      "inputs": ["src/**", "test/**", "package.json", "tsconfig.json", "tsdown.config.ts"],
+      "outputs": [],
+      "outputLogs": "errors-only"
     }
   }
 }
