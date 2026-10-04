@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.6.0](https://github.com/NanoForge-dev/Loader/compare/1.5.1...1.6.0) - (2026-10-04)
+
+## Features
+
+- Add loader display none when game is loaded (#108) ([a7e88de](https://github.com/NanoForge-dev/Loader/commit/a7e88deaff2d3116c4c77a5b18b0def9f8c78533)) by @Exeloo
+
 # [1.5.1](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5.1) - (2026-09-24)
 
 ## Bug Fixes

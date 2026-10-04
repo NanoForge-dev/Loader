@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.6.0](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader@1.5.1...@nanoforge-dev/loader@1.6.0) - (2026-10-04)
+
+## Features
+
+- Add editor IPC bridge and testing framework (#113) ([428838c](https://github.com/NanoForge-dev/Loader/commit/428838cd6a1eb90370a5c0e8cc15a96e157aab6f)) by @Exeloo
+- Add loader display none when game is loaded (#108) ([a7e88de](https://github.com/NanoForge-dev/Loader/commit/a7e88deaff2d3116c4c77a5b18b0def9f8c78533)) by @Exeloo
+
 # [1.5.1](https://github.com/NanoForge-dev/Loader/compare/@nanoforge-dev/loader@1.5.0...@nanoforge-dev/loader@1.5.1) - (2026-09-24)
 
 ## Bug Fixes

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.6.0](https://github.com/NanoForge-dev/Loader/compare/1.5.1...1.6.0) - (2026-10-04)
+
+## Features
+
+- Add editor IPC bridge and testing framework (#113) ([428838c](https://github.com/NanoForge-dev/Loader/commit/428838cd6a1eb90370a5c0e8cc15a96e157aab6f)) by @Exeloo
+
 # [1.5.1](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5.1) - (2026-09-24)
 
 ## Bug Fixes
