@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.6.0](https://github.com/NanoForge-dev/Loader/compare/1.5.1...1.6.0) - (2026-10-04)
+
 # [1.5.1](https://github.com/NanoForge-dev/Loader/compare/1.4.0...1.5.1) - (2026-09-24)
 
 ## Bug Fixes
