@@ -25,4 +25,4 @@ catalogs:
     '@nanoforge-dev/utils-prettier-config': ^1.0.2
     '@trivago/prettier-plugin-sort-imports': ^6.0.2
     eslint: ^10.11.0
-    prettier: ^3.9.9
+    prettier: ^3.9.10
