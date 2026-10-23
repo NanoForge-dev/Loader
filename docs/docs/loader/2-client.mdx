@@ -27,7 +27,7 @@ npx loader-client --dir .nanoforge/client --port 3000
 | --------------- | --------------------------------------------------------------------- |
 | `GET /`         | Serves the `loader-website` HTML application                          |
 | `GET /*`        | Serves static assets bundled with `loader-website`                    |
-| `GET /manifest` | Returns the list of game files and the current version as JSON        |
+| `GET /manifest` | Returns the game files (path, SHA-256 hash, size) and version as JSON |
 | `GET /env`      | Returns `NANOFORGE_*` environment variables (prefix stripped) as JSON |
 | `GET /game/*`   | Serves compiled game client files from the configured game directory  |
 

@@ -1,5 +1,7 @@
 export interface IManifestFile {
   path: string;
+  hash: string;
+  size: number;
 }
 
 export interface IManifest {

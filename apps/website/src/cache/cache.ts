@@ -1,5 +1,4 @@
 import { FileSystemManager } from "../file-system";
-import { isManifestUpToDate } from "../manifest";
 import {
   type IExtendedManifest,
   type IExtendedManifestFile,
@@ -7,15 +6,29 @@ import {
   type IManifestFile,
 } from "../types/manifest.type";
 import { Logger } from "../utils/logger.utils";
-import { setVersion } from "../version";
 import { setLoadingStatus, setLoadingTotalFiles } from "../window";
 
 const CACHE_LOCK_NAME = "nanoforge-game-cache";
+const CACHE_HASHES_KEY = "game-files";
+
+type IFileHashes = Record<string, string>;
 
 async function withCacheLock<T>(fn: () => Promise<T>): Promise<T> {
   if (typeof navigator === "undefined" || !navigator.locks) return fn();
   return await navigator.locks.request(CACHE_LOCK_NAME, fn);
 }
+
+const getFileHashes = (): IFileHashes => {
+  try {
+    return JSON.parse(localStorage.getItem(CACHE_HASHES_KEY) ?? "{}");
+  } catch {
+    return {};
+  }
+};
+
+const setFileHashes = (hashes: IFileHashes) => {
+  localStorage.setItem(CACHE_HASHES_KEY, JSON.stringify(hashes));
+};
 
 export class GameCache {
   private readonly logger: Logger = new Logger("Cache");
@@ -23,47 +36,56 @@ export class GameCache {
 
   async updateCache(manifest: IManifest, force = false): Promise<IExtendedManifest> {
     this.logger.info("Starting cache game files");
-
-    let extendedManifest = await this._tryReuseCache(manifest, force);
-
-    if (!extendedManifest) {
-      extendedManifest = await withCacheLock(async () => {
-        return (
-          (await this._tryReuseCache(manifest, force)) ?? (await this._updateCacheProcess(manifest))
-        );
-      });
-    }
-
-    setVersion(manifest.version);
+    const extendedManifest = await withCacheLock(() =>
+      this._updateCacheProcess(manifest.files, force),
+    );
     this.logger.info("Game files cached");
     return extendedManifest;
   }
 
-  private async _tryReuseCache(
-    manifest: IManifest,
+  private async _updateCacheProcess(
+    files: IManifestFile[],
     force: boolean,
-  ): Promise<IExtendedManifest | undefined> {
-    if (force || !isManifestUpToDate(manifest)) return undefined;
-    return this._parseCache(manifest);
-  }
+  ): Promise<IExtendedManifest> {
+    const stored = force ? {} : getFileHashes();
 
-  private async _updateCacheProcess(manifest: IManifest): Promise<IExtendedManifest> {
-    setLoadingStatus("Cleaning cache game files");
-    const directory = await this.fs.getDirectory();
-    await directory.clear();
-    return {
-      files: await this._updateCacheFiles(manifest.files),
-    };
-  }
-
-  private async _updateCacheFiles(files: IManifestFile[]): Promise<IExtendedManifestFile[]> {
-    const res = [];
-    setLoadingTotalFiles(files.length);
-    for (const [i, file] of files.entries()) {
-      setLoadingStatus(`Download: ${file.path.replace(/^\/+/, "")}`, i);
-      res.push(await this._updateCacheFile(file));
+    if (!Object.keys(stored).length) {
+      setLoadingStatus("Cleaning cache game files");
+      setFileHashes(stored);
+      await (await this.fs.getDirectory()).clear();
     }
-    return res;
+
+    const remotePaths = new Set(files.map(({ path }) => path));
+    for (const path of Object.keys(stored)) {
+      if (!remotePaths.has(path)) await this._removeCacheFile(path);
+    }
+    const hashes: IFileHashes = Object.fromEntries(
+      Object.entries(stored).filter(([path]) => remotePaths.has(path)),
+    );
+    setFileHashes(hashes);
+
+    setLoadingStatus("Verifying application integrity");
+    const res: IExtendedManifestFile[] = [];
+    const outdated: number[] = [];
+    for (const [i, file] of files.entries()) {
+      const cached = await this._parseFile(file, hashes);
+      if (cached) res[i] = cached;
+      else outdated.push(i);
+    }
+
+    setLoadingTotalFiles(outdated.length);
+    for (const [n, i] of outdated.entries()) {
+      const file = files[i] as IManifestFile;
+      setLoadingStatus(
+        `Download ${n + 1} / ${outdated.length}: ${file.path.replace(/^\/+/, "")}`,
+        n,
+      );
+      res[i] = await this._updateCacheFile(file);
+      hashes[file.path] = file.hash;
+      setFileHashes(hashes);
+    }
+
+    return { files: res };
   }
 
   private async _updateCacheFile(fileManifest: IManifestFile): Promise<IExtendedManifestFile> {
@@ -97,35 +119,25 @@ export class GameCache {
     };
   }
 
-  private async _parseCache(manifest: IManifest): Promise<IExtendedManifest | undefined> {
-    setLoadingStatus("Verifying application integrity");
-    return this._parseFiles(manifest.files);
+  private async _removeCacheFile(path: string): Promise<void> {
+    const i = path.lastIndexOf("/");
+    await this.fs
+      .getDirectory(path.slice(0, i))
+      .then((directory) => directory.removeChild(path.slice(i + 1)))
+      .catch(() => undefined);
   }
 
-  private async _parseFiles(files: IManifestFile[]): Promise<IExtendedManifest | undefined> {
-    const res = [];
-    for (const file of files) {
-      const r = await this._parseFile(file);
-      if (!r) return undefined;
-      res.push(r);
-    }
-    return {
-      files: res,
-    };
-  }
-
-  /**
-   * @todo Function to verify if the file passed in parameters exist
-   * @todo Verify if the file passed in parameters is really complete
-   */
   private async _parseFile(
     fileManifest: IManifestFile,
+    hashes: IFileHashes,
   ): Promise<IExtendedManifestFile | undefined> {
+    if (hashes[fileManifest.path] !== fileManifest.hash) return undefined;
     try {
-      const file = await this.fs.getFile(fileManifest.path);
+      const file = await (await this.fs.getFile(fileManifest.path)).getFile();
+      if (file.size !== fileManifest.size) return undefined;
       return {
         ...fileManifest,
-        localPath: await file.getUrl(),
+        localPath: URL.createObjectURL(file),
       };
     } catch {
       return undefined;

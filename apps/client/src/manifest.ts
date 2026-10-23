@@ -1,31 +1,20 @@
 import { updateFiles } from "./files";
-import { MANIFEST } from "./server";
+import { type IManifest, type IManifestFile, MANIFEST } from "./server";
 
-export const updateManifest = async (dir: string) => {
-  MANIFEST.files = [];
-  await updateFiles(dir);
-  MANIFEST.version = await getVersion(dir);
+export const updateManifest = async (dir: string): Promise<IManifest> => {
+  const files = await updateFiles(dir);
+  return { ...MANIFEST, files, version: await getVersion(files) };
 };
 
-const getVersion = async (dir: string) => {
+const getVersion = async (files: IManifestFile[]) => {
   try {
     return await Bun.file("public/version").text();
   } catch {
-    return await fingerprintFiles(dir);
+    return fingerprintFiles(files);
   }
 };
 
-const fingerprintFiles = async (dir: string): Promise<string> => {
-  const stamps = await Promise.all(
-    MANIFEST.files.map(async ({ path }) => {
-      try {
-        const stat = await Bun.file(`${dir}${path}`).stat();
-        return `${path}:${stat.size}:${stat.mtimeMs}`;
-      } catch {
-        return `${path}:missing`;
-      }
-    }),
-  );
-  stamps.sort();
+const fingerprintFiles = (files: IManifestFile[]): string => {
+  const stamps = files.map(({ path, hash }) => `${path}:${hash}`).sort();
   return Bun.hash(stamps.join("|")).toString(16);
 };

@@ -16,8 +16,8 @@ This package is a dependency of `loader-client` and is not consumed directly.
 When the browser opens the loader URL, the following steps happen in order:
 
 1. **Fetch manifest** — requests `/manifest` to get the game version and the list of files to download.
-2. **Verify cache** — checks whether the game files from the previous session are still present in the browser's Origin Private File System (OPFS). The loading screen shows _"Verifying application integrity"_.
-3. **Download files** — if the cache is stale or missing, downloads each game file from `/game/*` and writes it into OPFS. The loading screen shows a progress bar and the name of the current file.
+2. **Verify cache** — compares each file's hash and size with the copy cached in the browser's Origin Private File System (OPFS), and removes cached files no longer in the manifest. The loading screen shows _"Verifying application integrity"_.
+3. **Download files** — downloads only new or changed files from `/game/*` and writes them into OPFS. The loading screen shows a progress bar and the name of the current file.
 4. **Fetch environment** — requests `/env` to get the `NANOFORGE_*` variables forwarded by `loader-client`.
 5. **Bootstrap game** — dynamically imports `/main.js` from the local OPFS cache, calls its exported `main({ files, env, container })`, and fades out the loading screen.
 
