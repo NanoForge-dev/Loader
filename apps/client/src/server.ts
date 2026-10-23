@@ -5,9 +5,11 @@ import { getGameEnv } from "./env";
 import { updateManifest } from "./manifest";
 import { startWatch } from "./watch";
 
-type IManifest = {
+export type IManifestFile = { path: string; hash: string; size: number };
+
+export type IManifest = {
   version: string;
-  files: { path: string }[];
+  files: IManifestFile[];
   watch: { enable: false } | { enable: true; url: string };
 };
 
@@ -35,9 +37,7 @@ const { port, dir, watch, watchPort, watchServerDir, cert, key } = program.opts<
 
 if (!dir) throw new Error("No game dir specified");
 
-export const MANIFEST: IManifest = {
-  version: "",
-  files: [],
+export const MANIFEST: Pick<IManifest, "watch"> = {
   watch: {
     enable: false,
   },
@@ -86,8 +86,7 @@ const server = Bun.serve({
     },
     "/manifest": async () => {
       try {
-        await updateManifest(dir);
-        return Response.json(MANIFEST, {
+        return Response.json(await updateManifest(dir), {
           headers,
         });
       } catch (error) {

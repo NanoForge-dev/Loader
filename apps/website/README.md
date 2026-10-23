@@ -49,8 +49,8 @@ nf start
 When the browser opens the loader URL, the following steps happen in order:
 
 1. **Fetch manifest** — requests `/manifest` to get the game version and the list of files.
-2. **Verify cache** — checks whether the game files from the previous session are still present in the browser's Origin Private File System (OPFS).
-3. **Download files** — if the cache is stale or missing, downloads each game file from `/game/*` and writes it into OPFS, showing a progress bar and the current file name.
+2. **Verify cache** — compares each file's hash and size with the copy cached in the browser's Origin Private File System (OPFS), and removes cached files no longer in the manifest.
+3. **Download files** — downloads only new or changed files from `/game/*` and writes them into OPFS, showing a progress bar and the current file name.
 4. **Fetch environment** — requests `/env` to get the `NANOFORGE_*` variables forwarded by the server.
 5. **Bootstrap game** — dynamically imports `/main.js` from the local cache, calls its exported `main({ files, env, container })` and hides the loading screen.
 
