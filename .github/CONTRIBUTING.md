@@ -13,3 +13,13 @@ To get ready to work on the codebase, please do the following:
 5. Test with the CLI
 6. Run `pnpm format && pnpm build` to run ESLint/Prettier, build and tests
 7. [Submit a pull request](https://github.com/NanoForge-dev/Loader/compare) (Make sure you follow the [conventional commit format](https://github.com/NanoForge-dev/Loader/blob/main/.github/COMMIT_CONVENTION.md))
+
+## Releases
+
+Releases use the shared workflows of [NanoForge-dev/actions](https://github.com/NanoForge-dev/actions) (`@v3`), configured in `.github/nanoforge.json`. The client, server and website are one `shared` group, versioned together and published to npm.
+
+1. Run the **Release PR** workflow (Actions tab). Leave the inputs empty to take the version from the commits, or set `version`. Use `dry-run` to preview.
+2. Review and merge the `releases/loader@<version>` pull request with "Squash and merge".
+3. Merging it triggers the **Release** workflow: it publishes the packages on npm, tags and creates the GitHub release, then syncs `docs/docs` to the `cli` category of the docs.
+
+Other merged pull requests release nothing: the group has no `betaOnMerge`. For an alpha of one package, run **Alpha Release** on your branch and pick the package.
