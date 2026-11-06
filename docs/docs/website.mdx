@@ -3,8 +3,6 @@ title: Website
 description: Browser application that loads and bootstraps a NanoForge game
 ---
 
-import { Tooltip } from "mintlify/components";
-
 ## Overview
 
 `loader-website` is a browser application (HTML + TypeScript) bundled as static assets and served by `loader-client`. It is the loading screen the player sees before the game starts. It fetches the game's file list from the server, downloads and caches each file locally in the browser, then dynamically imports the game entry point and starts it.
