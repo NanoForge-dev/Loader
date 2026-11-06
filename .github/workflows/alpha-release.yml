@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       packages:
-        description: Comma-separated packages (empty = the only package of .github/nanoforge.json)
-        type: string
-        default: ""
+        description: The package to release
+        type: choice
+        required: true
+        options:
+          - "@nanoforge-dev/loader-client"
+          - "@nanoforge-dev/loader-server"
+          - "@nanoforge-dev/loader-website"
       dry-run:
         description: Perform a dry run?
         type: boolean

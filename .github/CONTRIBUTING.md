@@ -22,4 +22,4 @@ Releases use the shared workflows of [NanoForge-dev/actions](https://github.com/
 2. Review and merge the `releases/loader@<version>` pull request with "Squash and merge".
 3. Merging it triggers the **Release** workflow: it publishes the packages on npm, tags and creates the GitHub release, then syncs `docs/docs` to the `cli` category of the docs.
 
-Other merged pull requests release nothing: the group has no `betaOnMerge`. For an alpha of one package, run **Alpha Release** on your branch with that package's name.
+Other merged pull requests release nothing: the group has no `betaOnMerge`. For an alpha of one package, run **Alpha Release** on your branch and pick the package.
