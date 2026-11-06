@@ -13,5 +13,5 @@
       "commitFormat": "chore: release @nanoforge-dev/loader@{version}"
     }
   ],
-  "docs": { "category": "cli" }
+  "docs": { "category": "loader" }
 }

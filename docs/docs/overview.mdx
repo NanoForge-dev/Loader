@@ -40,15 +40,15 @@ npx loader-server --dir .nanoforge/server
 ## Packages
 
 <CardGroup cols={2}>
-  <Card title="loader-client" href="./2-client">
+  <Card title="loader-client" href="./client">
     Bun HTTP server that serves the loader website and the compiled client game files. Exposes the
     manifest, environment variables, and game assets. Supports HTTPS and hot-reload.
   </Card>
-  <Card title="loader-website" href="./3-website">
+  <Card title="loader-website" href="./website">
     Browser application bundled as static assets. Displays the loading screen, downloads and caches
     game files via the browser Origin Private File System, then bootstraps the game.
   </Card>
-  <Card title="loader-server" href="./4-server">
+  <Card title="loader-server" href="./server">
     Bun process that runs the server-side game code in an isolated worker process. Supports
     live-reload by restarting the worker on file changes.
   </Card>
