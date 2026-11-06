@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/NanoForge-dev/actions/v3/schema/nanoforge.schema.json",
+  "groups": [
+    {
+      "name": "loader",
+      "packages": [
+        "@nanoforge-dev/loader-client",
+        "@nanoforge-dev/loader-server",
+        "@nanoforge-dev/loader-website"
+      ],
+      "mode": "all",
+      "versioning": "shared",
+      "commitFormat": "chore: release @nanoforge-dev/loader@{version}"
+    }
+  ],
+  "docs": { "category": "cli" }
+}
