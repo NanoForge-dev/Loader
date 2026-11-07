@@ -1,8 +1,9 @@
 import { program } from "commander";
-import { join } from "node:path";
+import { dirname } from "node:path";
 
 import { getGameEnv } from "./env";
 import { updateManifest } from "./manifest";
+import { resolveInside } from "./safe-path";
 import { startWatch } from "./watch";
 
 export type IManifestFile = { path: string; hash: string; size: number };
@@ -49,6 +50,8 @@ const resolveWebDir = (str: string) => {
     .replace(/^file:\/\//, "");
 };
 
+const webDir = dirname(resolveWebDir("index.html"));
+
 const headers = {
   "Access-Control-Allow-Methods": "GET",
 };
@@ -67,8 +70,9 @@ const server = Bun.serve({
     },
     "/*": async (req) => {
       try {
-        const path = decodeURIComponent(new URL(req.url).pathname);
-        const file = Bun.file(resolveWebDir(path));
+        const path = resolveInside(webDir, decodeURIComponent(new URL(req.url).pathname));
+        if (!path) return new Response(null, { status: 404 });
+        const file = Bun.file(path);
 
         if (!(await file.exists()))
           return new Response(null, {
@@ -112,9 +116,10 @@ const server = Bun.serve({
     "/game/*": async (req) => {
       try {
         const path = decodeURIComponent(new URL(req.url).pathname.replace("/game", ""));
-        const file = Bun.file(join(dir, path));
+        const gamePath = resolveInside(dir, path);
+        const file = gamePath ? Bun.file(gamePath) : null;
 
-        if (!(await file.exists())) {
+        if (!file || !(await file.exists())) {
           return Response.json({ error: "Game file not found", path }, { status: 404, headers });
         }
 
