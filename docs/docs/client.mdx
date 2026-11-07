@@ -1,80 +1,59 @@
 ---
-title: Client
-description: Bun HTTP server that serves the browser-side of a NanoForge project
+title: Client loader
+description: The web server that serves the loading page and the client build
 ---
 
-## Overview
+## What it does
 
-`loader-client` is a Bun HTTP server that bridges the browser and the compiled game client. It serves the `loader-website` frontend, exposes the game file manifest, delivers the compiled game assets, and forwards environment variables to the browser. It is the single entry point for everything the player's browser contacts.
+The client loader (`@nanoforge-dev/loader-client`) is a Bun web server. [`nf start`](/docs/cli/commands/start)
+starts one for each client app, pointed at the app's build folder. It serves:
 
-## Usage
+- the [loading page](./website), at `/`;
+- the list of game files, at `/manifest`;
+- the client's environment variables, at `/env`;
+- the game files themselves, at `/game/<path>`.
 
-```bash
-nf start
-```
+It prints `Client started on url http://localhost:3000/` when it is ready.
 
-Or invoke directly after building the loader packages:
+## What nf start passes to it
 
-```bash
-npx loader-client --dir .nanoforge/client --port 3000
-```
+| `nf start` option or config field                          | Client loader option            |
+| ---------------------------------------------------------- | ------------------------------- |
+| the client build folder (`out.dir`)                        | `-d, --dir <dir>` (required)    |
+| `--port`, or `port` (default `3000`)                       | `-p, --port <port>`             |
+| `--watch` (set by `nf dev`)                                | `--watch`                       |
+| the server build folder, with `--watch` and one server app | `--watch-server-dir <dir>`      |
+| `--cert` and `--key`, or `tls`                             | `--cert <file>`, `--key <file>` |
 
-## Routes
+The client loader also has `--watch-port <port>` for the live-reload WebSocket. `nf start` doesn't
+set it, so the WebSocket takes a free port.
 
-| Route           | Description                                                           |
-| --------------- | --------------------------------------------------------------------- |
-| `GET /`         | Serves the `loader-website` HTML application                          |
-| `GET /*`        | Serves static assets bundled with `loader-website`                    |
-| `GET /manifest` | Returns the game files (path, SHA-256 hash, size) and version as JSON |
-| `GET /env`      | Returns `NANOFORGE_*` environment variables (prefix stripped) as JSON |
-| `GET /game/*`   | Serves compiled game client files from the configured game directory  |
+## Routes worth knowing when you debug
 
-## Options
+Open them in the browser next to the game:
 
-| Option                     | Type      | Default             | Description                                                                                                                                                      |
-| -------------------------- | --------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-p, --port <port>`        | `string`  | `3000`              | Port the HTTP server listens on                                                                                                                                  |
-| `-d, --dir <dir>`          | `string`  | `.nanoforge/client` | <Tooltip tip="The directory produced by nf build for the client part.">Directory of compiled client game files</Tooltip>                                         |
-| `--watch`                  | `boolean` | `false`             | Enable file watcher and browser hot-reload                                                                                                                       |
-| `--watch-port <port>`      | `string`  | auto                | <Tooltip tip="When not provided, the OS picks the first available port.">Port for the WebSocket watch server</Tooltip>                                           |
-| `--watch-server-dir <dir>` | `string`  | —                   | <Tooltip tip="Useful when client and server are compiled together and you want a single watch trigger.">Also watch a server game directory for changes</Tooltip> |
-| `--cert <file>`            | `string`  | —                   | TLS certificate file (enables HTTPS)                                                                                                                             |
-| `--key <file>`             | `string`  | —                   | TLS private key file (enables HTTPS)                                                                                                                             |
+| Route          | Returns                                                                                                                               |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `/manifest`    | JSON: each file of the build with its path, SHA-256 hash and size, a version, and the live-reload WebSocket URL when `--watch` is on. |
+| `/env`         | JSON: the variables the client gets, without the `NANOFORGE_` prefix, plus `tlsEnabled`.                                              |
+| `/game/<path>` | One file of the build, for example `/game/main.js`.                                                                                   |
 
-## Watch mode
+`/manifest` lists the build folder each time it is requested, so files added by a rebuild show up
+on the next page load. A hash is computed again only when a file's size or modification time
+changes.
 
-When `--watch` is enabled, `loader-client` starts a WebSocket server on `--watch-port` (or a random free port) and sets the `watch.url` field in the manifest response. Any file change in the game directory causes the server to broadcast an `update` message. The `loader-website` frontend connects to that WebSocket and reloads the page on receipt.
+## Live reload
 
-Pass `--watch-server-dir` to also reload when the server game directory changes — useful when client and server are compiled in one step.
+With `--watch`, the client loader watches the build folder and sends `update` on its WebSocket
+when a file changes. The loading page then reloads. Changes closer than 100 ms count as one. When
+`nf start` passes `--watch-server-dir`, a change in the server build reloads the page too, 100 ms
+later, to give the server time to restart.
 
-## HTTPS / TLS
+## HTTPS
 
-Pass `--cert` and `--key` to enable HTTPS. The server reads both files with Bun's native TLS support. The `/env` response will include `tlsEnabled: true` so the game can detect the protocol at runtime.
+With `--cert` and `--key`, the client loader serves HTTPS, and `/env` returns `tlsEnabled: true`.
+You need HTTPS as soon as players open the game on an address other than `localhost`: see
+[secure context](./website#secure-context).
 
-HTTPS is required when the browser enforces a secure context — for example when using the Origin Private File System API used by `loader-website` to cache game files.
-
-## Examples
-
-**Start on port 8080:**
-
-```bash
-npx loader-client --port 8080
-```
-
-**Start with watch mode:**
-
-```bash
-npx loader-client --watch --watch-server-dir .nanoforge/server
-```
-
-**Start with HTTPS:**
-
-```bash
-npx loader-client --cert ./certs/server.crt --key ./certs/server.key
-```
-
-**Point to a custom game directory:**
-
-```bash
-npx loader-client --dir ./dist/client
-```
+The live-reload WebSocket stays plain `ws://`, so a page served over HTTPS doesn't reload by
+itself.
