@@ -30,18 +30,19 @@ The server loader opens no port of its own: your server code opens the ones it n
 ## Environment variables
 
 Each loader passes the `NANOFORGE_*` variables that `nf start` gives it to your game, with the
-prefix removed: `NANOFORGE_SERVER_ADDRESS` reaches the game as `SERVER_ADDRESS`. The client's
+prefix removed: `NANOFORGE_CLIENT_SERVER_ADDRESS` in `.env`
+reaches the client game as `SERVER_ADDRESS`. The client's
 variables are sent to the browser, so anyone can read them. The rules are on the
 [environment variables](/docs/cli/configuration/environment-variables) page.
 
 ## Troubleshooting
 
-| What you see                                                                                         | Why, and what to do                                                                                                                                                              |
-| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.` | The page is not in a secure context: it was opened over HTTP on an address other than `localhost`. Use `localhost`, or serve over HTTPS ([how](/docs/cli/commands/start#https)). |
-| `Could not find main function`                                                                       | The client build has no `main.js` exporting `main`. Run `nf build`, and keep the entry file named `main.ts`.                                                                     |
-| The server log shows `No main.js found`                                                              | Same, for the server build.                                                                                                                                                      |
-| `Game file not found : <path>`                                                                       | A file listed when the page loaded was removed before it was downloaded, usually by a rebuild. Reload the page.                                                                  |
-| The page shows old code after a rebuild                                                              | Reload the page. If it persists, clear the site's data in the browser (storage and cache) to empty the loader's cache.                                                           |
-| The page doesn't reload with `nf dev`                                                                | The live-reload WebSocket address is `localhost` on a free port. Live reload works only in a browser on the machine that runs `nf dev`: reload by hand elsewhere.                |
-| An error message on the loading screen                                                               | The loading page shows errors thrown while loading or running the game. Open the browser console for the stack trace. **Back home** reloads the page.                            |
+| What you see                                                                                         | Why, and what to do                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.` | The page is not in a secure context: it was opened over HTTP on an address other than `localhost`. Use `localhost`, or [serve over HTTPS with nf start](/docs/cli/commands/start#https). |
+| `Could not find main function`                                                                       | The client build has no `main.js` exporting `main`. Run `nf build`, and keep the entry file named `main.ts`.                                                                             |
+| The server log shows `No main.js found`                                                              | Same, for the server build.                                                                                                                                                              |
+| `Game file not found : <path>`                                                                       | A file listed when the page loaded was removed before it was downloaded, usually by a rebuild. Reload the page.                                                                          |
+| The page shows old code after a rebuild                                                              | Reload the page. If it persists, clear the site's data in the browser (storage and cache) to empty the loader's cache.                                                                   |
+| The page doesn't reload with `nf dev`                                                                | The live-reload WebSocket address is `localhost` on a free port. Live reload works only in a browser on the machine that runs `nf dev`: reload by hand elsewhere.                        |
+| An error message on the loading screen                                                               | The loading page shows errors thrown while loading or running the game. Open the browser console for the stack trace. **Back home** reloads the page.                                    |

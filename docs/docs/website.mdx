@@ -14,12 +14,15 @@ browser, so the next visit downloads only what changed, then starts the game.
 The text under the logo shows the current step:
 
 1. **Fetching manifest**: it asks `/manifest` for the list of files, with their hash and size.
-2. **Verifying application integrity**: it compares each file with the cached copy. Files no
+2. **Cleaning cache game files**: on the first visit (or after you clear the site's data), it
+   empties the cache.
+3. **Verifying application integrity**: it compares each file with the cached copy. Files no
    longer in the list are removed from the cache.
-3. **Download n / total: [file]**: it downloads only the new or changed files, with a progress
+4. **Download n / total: [file]**: it downloads only the new or changed files, with a progress
    bar.
-4. **Starting game**: it imports `main.js` from the cache, fetches `/env`, calls the `main`
-   function of `main.js`, then fades the loading screen out.
+5. It imports `main.js` from the cache and fetches `/env`.
+6. **Starting game**: it calls the `main` function of `main.js`, then fades the loading screen
+   out.
 
 If a step fails, or the game throws an error later, the loading screen comes back with the error
 message and a **Back home** link that reloads the page.

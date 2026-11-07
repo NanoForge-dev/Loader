@@ -10,8 +10,8 @@ The server loader (`@nanoforge-dev/loader-server`) runs the server app of your g
 folder (`-d, --dir <dir>`, required).
 
 It lists the files of the build folder, finds `main.js` at its root, and starts a child process
-(the worker) that loads `main.js` and calls its `main` function. A crash or a `process.exit()` in
-your game stops the worker, not the loader.
+(the worker) that loads `main.js` and calls its `main` function. When the worker exits (a crash,
+or a `process.exit()` in your game), the server loader stops too, even with `--watch`.
 
 ## What your server's main receives
 
@@ -40,5 +40,5 @@ Players connected to the old worker lose their connection when it restarts.
   check the server's `out.dir`.
 - **`No main.js found`**: the build folder has no `main.js` at its root. Run `nf build`, and keep
   the server entry file named `main.ts`.
-- **An error thrown by your game**: the worker prints it, then stops. Fix the error and save:
-  with `--watch`, the loader starts a new worker on the next build.
+- **An error thrown by your game**: the worker prints it and exits, and the server loader stops
+  with it. Fix the error, then restart `nf dev` (or `nf start`).
