@@ -1,62 +1,69 @@
 ---
-title: Website
-description: Browser application that loads and bootstraps a NanoForge game
+title: Loading page
+description: The page that downloads, caches and starts your game in the browser
 ---
 
-## Overview
+## What it does
 
-`loader-website` is a browser application (HTML + TypeScript) bundled as static assets and served by `loader-client`. It is the loading screen the player sees before the game starts. It fetches the game's file list from the server, downloads and caches each file locally in the browser, then dynamically imports the game entry point and starts it.
+The loading page (`@nanoforge-dev/loader-website`) is what players see while the game loads. The
+[client loader](./client) serves it at `/`. It downloads the game files into a cache in the
+browser, so the next visit downloads only what changed, then starts the game.
 
-This package is a dependency of `loader-client` and is not consumed directly.
+## Loading steps
 
-## Loading sequence
+The text under the logo shows the current step:
 
-When the browser opens the loader URL, the following steps happen in order:
+1. **Fetching manifest**: it asks `/manifest` for the list of files, with their hash and size.
+2. **Cleaning cache game files**: on the first visit (or after you clear the site's data), it
+   empties the cache.
+3. **Verifying application integrity**: it compares each file with the cached copy. Files no
+   longer in the list are removed from the cache.
+4. **Download n / total: [file]**: it downloads only the new or changed files, with a progress
+   bar.
+5. It imports `main.js` from the cache and fetches `/env`.
+6. **Starting game**: it calls the `main` function of `main.js`, then fades the loading screen
+   out.
 
-1. **Fetch manifest** — requests `/manifest` to get the game version and the list of files to download.
-2. **Verify cache** — compares each file's hash and size with the copy cached in the browser's Origin Private File System (OPFS), and removes cached files no longer in the manifest. The loading screen shows _"Verifying application integrity"_.
-3. **Download files** — downloads only new or changed files from `/game/*` and writes them into OPFS. The loading screen shows a progress bar and the name of the current file.
-4. **Fetch environment** — requests `/env` to get the `NANOFORGE_*` variables forwarded by `loader-client`.
-5. **Bootstrap game** — dynamically imports `/main.js` from the local OPFS cache, calls its exported `main({ files, env, container })`, and fades out the loading screen.
+If a step fails, or the game throws an error later, the loading screen comes back with the error
+message and a **Back home** link that reloads the page.
 
-If any step fails, the error message is displayed on screen instead of a blank page or an unhandled rejection.
+## What your client's main receives
 
-## Game interface
+The loading page calls the `main` export of the client's `main.js` with one object:
 
-`loader-website` calls the game's `main` export with the following shape:
+| Field       | Type                                  | Description                                                        |
+| ----------- | ------------------------------------- | ------------------------------------------------------------------ |
+| `files`     | `Map<string, string>`                 | Each game file (`/player.png`) mapped to a URL of its cached copy. |
+| `env`       | `Record<string, string \| undefined>` | The client's environment variables, from `/env`.                   |
+| `container` | `HTMLDivElement`                      | The element the game renders into.                                 |
 
-| Field       | Type                                  | Description                                                                    |
-| ----------- | ------------------------------------- | ------------------------------------------------------------------------------ |
-| `files`     | `Map<string, string>`                 | Map of logical game paths (`/assets/sprite.png`, etc.) to their OPFS blob URLs |
-| `env`       | `Record<string, string \| undefined>` | Environment variables fetched from `/env` (prefix stripped)                    |
-| `container` | `HTMLDivElement`                      | The DOM element the game should render into                                    |
+The `main.ts` that `nf new` generates passes this object to `app.init`, so you rarely read it
+yourself.
 
-## Watch mode
+## Secure context
 
-When `loader-client` starts with `--watch`, the manifest response includes a `watch.url` WebSocket URL. `loader-website` connects to that URL and listens for messages. When it receives an `update` message it reloads the page, giving the developer an automatic live-reload experience.
+The cache uses the browser's
+[Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system),
+which only works in a
+[secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts):
 
-## Error display
+- `http://localhost:3000` works;
+- `http://192.168.1.20:3000` or `http://my-server:3000` does not;
+- any `https://` address works.
 
-`loader-website` installs global handlers for `error` and `unhandledrejection` window events. If the game throws or rejects after starting, the error message is surfaced on the loading screen instead of failing silently.
+Outside a secure context, the page stops at once with:
 
-## Requirements
-
-`loader-website` uses the browser's [Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system) (OPFS) API to cache game files locally. This API is only available in a **secure context** — either `localhost` or a page served over HTTPS.
-
-Start `loader-client` with `--cert` and `--key` to enable HTTPS when running on a non-localhost address.
-
-## Examples
-
-The website loader is not invoked directly. Start it via the CLI or `loader-client`:
-
-```bash
-nf start
+```text
+Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.
 ```
 
-Or:
+Serve the game over HTTPS to open it from another machine: see
+[HTTPS with nf start](/docs/cli/commands/start#https).
 
-```bash
-npx loader-client --port 3000 --cert ./certs/server.crt --key ./certs/server.key
-```
+## Cache
 
-Then open the printed URL in a browser. The loader screen will appear, followed by the game.
+The cache belongs to the site's address (the origin). Two games served on the same address and
+port share it: the second one replaces the files of the first.
+
+To empty it, clear the site's data in the browser (storage and cache). The next load downloads
+every file again.

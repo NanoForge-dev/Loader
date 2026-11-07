@@ -1,91 +1,44 @@
 ---
-title: Server
-description: Bun process that runs the server-side game code of a NanoForge project
+title: Server loader
+description: The Bun process that runs the server build of your game
 ---
 
-## Overview
+## What it does
 
-`loader-server` is a Bun process that runs the compiled server-side game code. It scans a built game directory, locates `/main.js`, then forks an isolated child process — the worker — that loads the game and calls its exported `main()` function. The parent process manages the worker lifecycle and restarts it when files change in watch mode.
+The server loader (`@nanoforge-dev/loader-server`) runs the server app of your game.
+[`nf start`](/docs/cli/commands/start) starts one for each server app, pointed at the app's build
+folder (`-d, --dir <dir>`, required).
 
-## Usage
+It lists the files of the build folder, finds `main.js` at its root, and starts a child process
+(the worker) that loads `main.js` and calls its `main` function. When the worker exits (a crash,
+or a `process.exit()` in your game), the server loader stops too, even with `--watch`.
 
-```bash
-nf start
-```
+## What your server's main receives
 
-Or invoke directly after building the loader packages:
+| Field    | Type                                  | Description                                                                            |
+| -------- | ------------------------------------- | -------------------------------------------------------------------------------------- |
+| `files`  | `Map<string, string>`                 | Each file of the build (`/map.json`) mapped to its full path on disk.                  |
+| `env`    | `Record<string, string \| undefined>` | The server's environment variables, without the `NANOFORGE_` prefix.                   |
+| `editor` | object, optional                      | Set only when the NanoForge editor runs the game: the channel between game and editor. |
 
-```bash
-npx loader-server --dir .nanoforge/server
-```
+The `main.ts` that `nf new` generates passes this object to `app.init`.
 
-## How it works
+`files` is built once, when the loader starts. A file added to the build later is not in it until
+the loader restarts (stop and start `nf dev` or `nf start`).
 
-The server loader runs as two processes:
+## Restart on change
 
-1. **Server** (`server.js`) — the entry point. Scans the game directory, finds `/main.js`, and forks the worker. In `--watch` mode it restarts the worker on any file change.
-2. **Worker** (`worker.js`) — an isolated child process forked by the server. It requires the game's `main.js` via `createRequire` and calls `main({ files, env })` to start the game.
+With `--watch` (set by [`nf dev`](/docs/cli/commands/dev)), the loader watches the build folder.
+When a file changes, it stops the worker and starts a new one, with a clean state. Changes closer
+than 100 ms count as one restart.
 
-This two-process split ensures that a game crash or `process.exit()` call in the game code does not terminate the loader itself.
+Players connected to the old worker lose their connection when it restarts.
 
-## Options
+## Common errors
 
-| Option            | Type      | Default             | Description                                                                                                                              |
-| ----------------- | --------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `-d, --dir <dir>` | `string`  | `.nanoforge/server` | <Tooltip tip="The directory produced by nf build for the server part.">Directory of compiled server game files</Tooltip>                 |
-| `--watch`         | `boolean` | `false`             | <Tooltip tip="Kills and reforks the worker whenever a file changes in --dir.">Enable file watcher and worker restart on change</Tooltip> |
-
-## Watch mode
-
-When `--watch` is enabled, the loader watches the game directory recursively. On any file change the running worker is killed and a new worker is immediately forked with a clean state. Changes are debounced to 100 ms to avoid redundant restarts during bulk builds.
-
-## Environment variables
-
-The server loader collects all environment variables whose name starts with `NANOFORGE_`, strips the prefix, and passes the resulting object to the game via the `env` field of `main()`:
-
-```
-NANOFORGE_MY_VAR=hello  →  { MY_VAR: "hello" }
-```
-
-The game receives these inside the worker:
-
-```ts
-export const main = async ({
-  files,
-  env,
-}: {
-  files: Map<string, string>;
-  env: Record<string, string | undefined>;
-}) => {
-  console.log(env.MY_VAR); // "hello"
-};
-```
-
-## Game interface
-
-The worker calls the game's `main` export with the following shape:
-
-| Field   | Type                                  | Description                                                                 |
-| ------- | ------------------------------------- | --------------------------------------------------------------------------- |
-| `files` | `Map<string, string>`                 | Map of logical game paths (`/main.js`, etc.) to their full filesystem paths |
-| `env`   | `Record<string, string \| undefined>` | Environment variables forwarded from the host (prefix stripped)             |
-
-## Examples
-
-**Start with a custom game directory:**
-
-```bash
-npx loader-server --dir ./dist/server
-```
-
-**Start in watch mode:**
-
-```bash
-npx loader-server --watch
-```
-
-**Pass environment variables to the game:**
-
-```bash
-NANOFORGE_PORT=4000 NANOFORGE_DEBUG=true npx loader-server
-```
+- **`No game dir specified`**: the loader was started without `-d`. `nf start` always passes it;
+  check the server's `out.dir`.
+- **`No main.js found`**: the build folder has no `main.js` at its root. Run `nf build`, and keep
+  the server entry file named `main.ts`.
+- **An error thrown by your game**: the worker prints it and exits, and the server loader stops
+  with it. Fix the error, then restart `nf dev` (or `nf start`).

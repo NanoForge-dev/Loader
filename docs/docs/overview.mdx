@@ -1,55 +1,48 @@
 ---
 title: Loader
-description: Overview of the @nanoforge-dev/loader packages
+description: What runs in the browser and on the server when you run nf start or nf dev
 ---
 
-## What is the Loader?
+## What is the loader?
 
-The NanoForge Loader is the runtime layer that starts a NanoForge project. It is invoked by the [NanoForge CLI](https://github.com/NanoForge-dev/CLI) when you run `nf start`, and handles both sides of a game simultaneously: the **client side** delivered to the browser and the **server side** running in Bun.
+The loader is the runtime behind [`nf start`](/docs/cli/commands/start) and
+[`nf dev`](/docs/cli/commands/dev). You don't install or run it yourself: the CLI includes it and
+starts one loader per app of your project.
 
-The Loader is a monorepo of three packages, each with a distinct responsibility at runtime:
+| Part                      | Runs                    | Does                                                                                     |
+| ------------------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| [Client loader](./client) | on your machine, in Bun | Serves the loading page and the client build to the browser, and the client's variables. |
+| [Loading page](./website) | in the player's browser | Downloads the game files into a browser cache, then starts the client's `main.js`.       |
+| [Server loader](./server) | on your machine, in Bun | Runs the server build's `main.js` in a child process, and restarts it on change.         |
 
-- **`loader-client`** — the Bun HTTP server that serves the browser with the loader UI and the compiled game files.
-- **`loader-server`** — the Bun process that runs the compiled server game code in an isolated worker.
-- **`loader-website`** — the browser application that displays the loading screen, caches game files locally, and bootstraps the game.
+A game without a server has only the client loader and the loading page.
 
-The NanoForge CLI orchestrates all three; as a game developer you never interact with these packages directly.
+## Ports
 
-## Installation
+| Port                         | Used by                                                     | Set with                                                                                    |
+| ---------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 3000                         | the client loader (the page players open)                   | `nf start --port`, or `port` in the client's `nanoforge.config.ts`                          |
+| a free port, picked at start | the live-reload WebSocket of `nf dev`                       | nothing: the loading page gets it from the client loader                                    |
+| 4444 (TCP), 4445 (UDP)       | your game's network, in a project made by `nf new --server` | the `.env` file: see [environment variables](/docs/cli/configuration/environment-variables) |
 
-```bash
-npm install -g @nanoforge-dev/cli
-```
+The server loader opens no port of its own: your server code opens the ones it needs.
 
-The loader packages are dependencies of the CLI and do not need to be installed separately. If you want to invoke the loaders directly outside of the CLI:
+## Environment variables
 
-```bash
-npm install @nanoforge-dev/loader-client
-npm install @nanoforge-dev/loader-server
-```
+Each loader passes the `NANOFORGE_*` variables that `nf start` gives it to your game, with the
+prefix removed: `NANOFORGE_CLIENT_SERVER_ADDRESS` in `.env`
+reaches the client game as `SERVER_ADDRESS`. The client's
+variables are sent to the browser, so anyone can read them. The rules are on the
+[environment variables](/docs/cli/configuration/environment-variables) page.
 
-Then run them with:
+## Troubleshooting
 
-```bash
-npx loader-client --dir .nanoforge/client
-npx loader-server --dir .nanoforge/server
-```
-
-## Packages
-
-<CardGroup cols={2}>
-  <Card title="loader-client" href="./client">
-    Bun HTTP server that serves the loader website and the compiled client game files. Exposes the
-    manifest, environment variables, and game assets. Supports HTTPS and hot-reload.
-  </Card>
-  <Card title="loader-website" href="./website">
-    Browser application bundled as static assets. Displays the loading screen, downloads and caches
-    game files via the browser Origin Private File System, then bootstraps the game.
-  </Card>
-  <Card title="loader-server" href="./server">
-    Bun process that runs the server-side game code in an isolated worker process. Supports
-    live-reload by restarting the worker on file changes.
-  </Card>
-</CardGroup>
-
-see the [changelog](https://github.com/NanoForge-dev/Loader/blob/main/CHANGELOG.md) for the full release history.
+| What you see                                                                                         | Why, and what to do                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Storage issue: The game must be hosted with SSL (HTTPS) to enable local storage and load properly.` | The page is not in a secure context: it was opened over HTTP on an address other than `localhost`. Use `localhost`, or [serve over HTTPS with nf start](/docs/cli/commands/start#https). |
+| `Could not find main function`                                                                       | The client build has no `main.js` exporting `main`. Run `nf build`, and keep the entry file named `main.ts`.                                                                             |
+| The server log shows `No main.js found`                                                              | Same, for the server build.                                                                                                                                                              |
+| `Game file not found : <path>`                                                                       | A file listed when the page loaded was removed before it was downloaded, usually by a rebuild. Reload the page.                                                                          |
+| The page shows old code after a rebuild                                                              | Reload the page. If it persists, clear the site's data in the browser (storage and cache) to empty the loader's cache.                                                                   |
+| The page doesn't reload with `nf dev`                                                                | The live-reload WebSocket address is `localhost` on a free port. Live reload works only in a browser on the machine that runs `nf dev`: reload by hand elsewhere.                        |
+| An error message on the loading screen                                                               | The loading page shows errors thrown while loading or running the game. Open the browser console for the stack trace. **Back home** reloads the page.                                    |
