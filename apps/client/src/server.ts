@@ -1,5 +1,6 @@
 import { program } from "commander";
 import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { getGameEnv } from "./env";
 import { updateManifest } from "./manifest";
@@ -45,9 +46,9 @@ export const MANIFEST: Pick<IManifest, "watch"> = {
 };
 
 const resolveWebDir = (str: string) => {
-  return import.meta
-    .resolve(`@nanoforge-dev/loader-website/${str.replace(/^\//, "")}`)
-    .replace(/^file:\/\//, "");
+  return fileURLToPath(
+    import.meta.resolve(`@nanoforge-dev/loader-website/${str.replace(/^\//, "")}`),
+  );
 };
 
 const webDir = dirname(resolveWebDir("index.html"));
