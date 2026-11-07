@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.7.0](https://github.com/NanoForge-dev/Loader/compare/1.6.0...1.7.0) - (2026-11-07)
+
+## Features
+
+- Update game cache per file instead of full re-download (#121) ([db7baf7](https://github.com/NanoForge-dev/Loader/commit/db7baf7f6ca273286c53f0a24c078fb03a3857b1)) by @Tchips46
+
 # [1.6.0](https://github.com/NanoForge-dev/Loader/compare/1.5.1...1.6.0) - (2026-10-04)
 
 ## Features
