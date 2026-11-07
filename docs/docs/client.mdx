@@ -55,5 +55,5 @@ With `--cert` and `--key`, the client loader serves HTTPS, and `/env` returns `t
 You need HTTPS as soon as players open the game on an address other than `localhost`: see
 [secure context](./website#secure-context).
 
-The live-reload WebSocket stays plain `ws://`, so a page served over HTTPS doesn't reload by
-itself.
+The live-reload WebSocket stays plain `ws://`, on `localhost`. Live reload works only in a browser
+on the machine that runs the loader.
