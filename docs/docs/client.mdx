@@ -38,6 +38,9 @@ Open them in the browser next to the game:
 | `/env`         | JSON: the variables the client gets, without the `NANOFORGE_` prefix, plus `tlsEnabled`.                                              |
 | `/game/<path>` | One file of the build, for example `/game/main.js`.                                                                                   |
 
+Only files inside the build folder are served at `/game/<path>`, and only files of the loading page at
+the other paths. Any other path returns a 404.
+
 `/manifest` lists the build folder each time it is requested, so files added by a rebuild show up
 on the next page load. A hash is computed again only when a file's size or modification time
 changes.
