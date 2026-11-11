@@ -53,14 +53,14 @@ The server loader runs in two processes:
 
 ## Options
 
-| Option            | Default             | Description                                      |
-| ----------------- | ------------------- | ------------------------------------------------ |
-| `-d, --dir <dir>` | `.nanoforge/server` | Directory of compiled server game files          |
-| `--watch`         | `false`             | Enable file watcher and worker restart on change |
+| Option            | Default  | Description                                      |
+| ----------------- | -------- | ------------------------------------------------ |
+| `-d, --dir <dir>` | required | Directory of compiled server game files          |
+| `--watch`         | `false`  | Enable file watcher and worker restart on change |
 
 ## Watch Mode
 
-When `--watch` is enabled, the loader watches the game directory recursively. On any file change, the running worker is killed and a new worker is immediately forked with a fresh state. Changes are debounced to 100 ms to avoid redundant restarts during bulk builds.
+When `--watch` is enabled, the loader watches the game directory recursively. On any file change, the running worker is killed and a new worker is immediately forked with a fresh state. The first change restarts the worker, and further changes in the next 100 ms are ignored, so a burst of changes within that window causes one restart.
 
 ## Environment Variables
 
