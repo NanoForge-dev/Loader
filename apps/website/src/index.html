@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="assets/favicon.ico" />
     <link rel="stylesheet" href="style.css" />
-    <title>Title</title>
+    <title>NanoForge</title>
   </head>
   <body>
     <script type="module" src="index.ts"></script>
+    <div id="loader-alert" class="visually-hidden" role="alert"></div>
     <div id="nanoforge-loader">
-      <img id="loader-logo" src="assets/logo.png" alt="logo" />
+      <img id="loader-logo" src="assets/logo.png" alt="NanoForge" />
       <div>
         <div id="loader-error" hidden="">
-          <div id="loader-error-message"></div>
+          <div id="loader-error-message" aria-hidden="true"></div>
           <a id="back-home" href="/"> Back home </a>
         </div>
         <div id="loading-status">
-          <div id="loading-step"></div>
-          <div id="loading-bar">
+          <div id="loading-step" role="status"></div>
+          <div
+            id="loading-bar"
+            role="progressbar"
+            aria-label="Loading progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
             <div id="loading-bar-fill"></div>
           </div>
         </div>
