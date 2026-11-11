@@ -61,15 +61,15 @@ The client loader is a Bun HTTP server that bridges the browser and the compiled
 - Supports HTTPS/TLS via `--cert` and `--key`
 - Supports hot-reload via WebSocket watch mode (`--watch`)
 
-| Option                     | Default             | Description                                    |
-| -------------------------- | ------------------- | ---------------------------------------------- |
-| `-p, --port <port>`        | `3000`              | Port the HTTP server listens on                |
-| `-d, --dir <dir>`          | `.nanoforge/client` | Directory of compiled client game files        |
-| `--watch`                  | `false`             | Enable file watcher and browser hot-reload     |
-| `--watch-port <port>`      | auto                | Port for the WebSocket watch server            |
-| `--watch-server-dir <dir>` | —                   | Also watch a server game directory for changes |
-| `--cert <file>`            | —                   | TLS certificate file (enables HTTPS)           |
-| `--key <file>`             | —                   | TLS private key file (enables HTTPS)           |
+| Option                     | Default  | Description                                    |
+| -------------------------- | -------- | ---------------------------------------------- |
+| `-p, --port <port>`        | `3000`   | Port the HTTP server listens on                |
+| `-d, --dir <dir>`          | required | Directory of compiled client game files        |
+| `--watch`                  | `false`  | Enable file watcher and browser hot-reload     |
+| `--watch-port <port>`      | auto     | Port for the WebSocket watch server            |
+| `--watch-server-dir <dir>` | —        | Also watch a server game directory for changes |
+| `--cert <file>`            | —        | TLS certificate file (enables HTTPS)           |
+| `--key <file>`             | —        | TLS private key file (enables HTTPS)           |
 
 ### `@nanoforge-dev/loader-server`
 
@@ -80,10 +80,10 @@ The server loader is a Bun process that runs the server-side game code. It:
 - Passes all game files and `NANOFORGE_*` environment variables to the game
 - Restarts the worker on file changes when `--watch` is enabled
 
-| Option            | Default             | Description                                      |
-| ----------------- | ------------------- | ------------------------------------------------ |
-| `-d, --dir <dir>` | `.nanoforge/server` | Directory of compiled server game files          |
-| `--watch`         | `false`             | Enable file watcher and worker restart on change |
+| Option            | Default  | Description                                      |
+| ----------------- | -------- | ------------------------------------------------ |
+| `-d, --dir <dir>` | required | Directory of compiled server game files          |
+| `--watch`         | `false`  | Enable file watcher and worker restart on change |
 
 ### `@nanoforge-dev/loader-website`
 
