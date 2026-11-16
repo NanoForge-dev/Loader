@@ -4,8 +4,10 @@ export const IDS = {
 
   loadingStatus: "loading-status",
   loadingStep: "loading-step",
-  loadingBar: "loading-bar-fill",
+  loadingBar: "loading-bar",
+  loadingBarFill: "loading-bar-fill",
 
+  loaderAlert: "loader-alert",
   loaderError: "loader-error",
   loaderErrorMessage: "loader-error-message",
 };
