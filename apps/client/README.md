@@ -58,15 +58,15 @@ The client loader exposes the following HTTP routes:
 
 ## Options
 
-| Option                     | Default             | Description                                    |
-| -------------------------- | ------------------- | ---------------------------------------------- |
-| `-p, --port <port>`        | `3000`              | Port the HTTP server listens on                |
-| `-d, --dir <dir>`          | `.nanoforge/client` | Directory of compiled client game files        |
-| `--watch`                  | `false`             | Enable file watcher and browser hot-reload     |
-| `--watch-port <port>`      | auto                | Port for the WebSocket watch server            |
-| `--watch-server-dir <dir>` | —                   | Also watch a server game directory for changes |
-| `--cert <file>`            | —                   | TLS certificate file (enables HTTPS)           |
-| `--key <file>`             | —                   | TLS private key file (enables HTTPS)           |
+| Option                     | Default  | Description                                    |
+| -------------------------- | -------- | ---------------------------------------------- |
+| `-p, --port <port>`        | `3000`   | Port the HTTP server listens on                |
+| `-d, --dir <dir>`          | required | Directory of compiled client game files        |
+| `--watch`                  | `false`  | Enable file watcher and browser hot-reload     |
+| `--watch-port <port>`      | auto     | Port for the WebSocket watch server            |
+| `--watch-server-dir <dir>` | —        | Also watch a server game directory for changes |
+| `--cert <file>`            | —        | TLS certificate file (enables HTTPS)           |
+| `--key <file>`             | —        | TLS private key file (enables HTTPS)           |
 
 ## Watch Mode
 
