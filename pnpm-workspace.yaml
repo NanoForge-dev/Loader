@@ -18,7 +18,7 @@ catalogs:
     '@types/bun': ^1.4.4
     '@types/node': ^26.6.2
     bun: ^1.4.4
-    commander: ^15.0.0
+    commander: ^15.1.0
   lint:
     '@nanoforge-dev/utils-eslint-config': ^1.0.2
     '@nanoforge-dev/utils-prettier-config': ^1.0.2
