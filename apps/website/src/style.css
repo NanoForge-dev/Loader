@@ -74,6 +74,15 @@ body {
   display: none !important;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 #back-home {
   background-color: rgba(151, 63, 255, 0.8);
   text-decoration: none;

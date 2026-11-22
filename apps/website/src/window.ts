@@ -31,13 +31,15 @@ export const changeWindowToLoader = async () => {
 
 export const setLoadingStatus = (filename: string, index?: number | null) => {
   const loaderFilename = document.getElementById(IDS.loadingStep);
-  const loadingBarFill = document.getElementById(IDS.loadingBar);
+  const loadingBar = document.getElementById(IDS.loadingBar);
+  const loadingBarFill = document.getElementById(IDS.loadingBarFill);
 
   if (loaderFilename) loaderFilename.innerText = filename;
 
-  if (loadingBarFill && index && totalFiles > 0) {
+  if (loadingBar && loadingBarFill && index != null && totalFiles > 0) {
     const progress = ((index + 1) / totalFiles) * 100;
     loadingBarFill.style.width = `${progress}%`;
+    loadingBar.setAttribute("aria-valuenow", String(progress));
   }
 };
 
@@ -51,6 +53,8 @@ export const setError = (error: string | Error | unknown) => {
   if (!loaderErrorMessage) return;
   const errorMessage = error instanceof Error ? error.message : String(error);
   loaderErrorMessage.innerText = errorMessage;
+  const alert = document.getElementById(IDS.loaderAlert);
+  if (alert) alert.textContent = errorMessage;
 
   showLoader();
 
