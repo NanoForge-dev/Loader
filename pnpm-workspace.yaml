@@ -16,7 +16,7 @@ catalogs:
     lint-staged: ^17.5.1
   core:
     '@types/bun': ^1.4.4
-    '@types/node': ^26.6.2
+    '@types/node': ^26.6.6
     bun: ^1.4.4
     commander: ^15.1.0
   lint:
