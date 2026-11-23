@@ -13,7 +13,7 @@ catalogs:
     '@commitlint/config-conventional': ^21.2.4
     '@favware/cliff-jumper': ^6.1.0
     husky: ^9.1.7
-    lint-staged: ^17.5.1
+    lint-staged: ^17.6.1
   core:
     '@types/bun': ^1.4.4
     '@types/node': ^26.6.2
